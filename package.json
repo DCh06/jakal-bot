@@ -1,0 +1,25 @@
+{
+  "name": "jakal-bot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./dist/index.js",
+  "scripts": {
+    "start": "tsc && node -r dotenv/config ./dist/index.js",
+    "build": "tsc"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@discordjs/builders": "^1.6.3",
+    "@discordjs/rest": "^1.7.1",
+    "discord-api-types": "^0.37.43",
+    "discord.js": "^14.11.0",
+    "dotenv": "^16.1.4",
+    "mongoose": "^7.2.2"
+  },
+  "devDependencies": {
+    "@types/node": "^20.2.5",
+    "typescript": "^5.1.3"
+  }
+}
