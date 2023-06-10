@@ -4,10 +4,12 @@ import {
   Events,
   GatewayIntentBits,
   Message,
+  TextChannel,
 } from "discord.js";
 // import { ping } from "./commands/ping";
 import path from "path";
 import * as fs from "fs";
+import { log } from "console";
 require("dotenv").config();
 
 const client: Client & { commands?: Collection<any, any> } = new Client({
@@ -56,16 +58,27 @@ client.on(Events.MessageCreate, (message: Message<boolean>) => {
   const rnd = Math.random();
   console.log(rnd);
 
-  if (rnd < 0.1) message.react("👍");
+  if (message.content.indexOf("backlog") > -1) {
+    message.channel.send(
+      `Okey a mam to nějak urgovat? Bando? Ještě nějak jak s tim mužu pomoct?`
+    );
+  }
 
-  if (rnd > 0.05 && rnd <= 0.09) {
+  if (rnd < 0.05) message.react("👍");
+
+  if (rnd > 0.08 && rnd <= 0.09) {
     message.channel.send(
       `Taky bych ${message.content}, ale to poznáš až budeš mít děti`
     );
     return;
   }
 
-  if (rnd > 0.98) message.channel.send("Distinct vrací unikátní záznamy");
+  if (rnd > 0.99) message.channel.send("Distinct vrací unikátní záznamy");
+});
+
+client.on("presenceUpdate", (oldMember, newMember) => {
+  // const channel = (<TextChannel>client.channels.cache.get(`1111262673225654444`));
+  console.log(newMember);
 });
 
 client.on(Events.InteractionCreate, async (interaction) => {
