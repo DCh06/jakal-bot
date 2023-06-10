@@ -1,10 +1,21 @@
-import { Client, Collection, Events, GatewayIntentBits } from "discord.js";
+import {
+  Client,
+  Collection,
+  Events,
+  GatewayIntentBits,
+  Message,
+} from "discord.js";
 // import { ping } from "./commands/ping";
 import path from "path";
 import * as fs from "fs";
+require("dotenv").config();
 
 const client: Client & { commands?: Collection<any, any> } = new Client({
-  intents: [GatewayIntentBits.Guilds],
+  intents: [
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildMessages,
+    GatewayIntentBits.MessageContent,
+  ],
 });
 
 client.commands = new Collection();
@@ -35,6 +46,22 @@ client.on(Events.ClientReady, (c) =>
 
 client.on(Events.InteractionCreate, (interaction) => {
   console.log(interaction);
+});
+
+client.on(Events.MessageCreate, (message: Message<boolean>) => {
+  const rnd = Math.random();
+  console.log(rnd);
+
+  if (rnd < 0.1) message.react("👍");
+
+  if (rnd > 0.05 && rnd <= 0.09) {
+    message.channel.send(
+      `Taky bych ${message.content}, ale to poznáš až budeš mít děti`
+    );
+    return;
+  }
+
+  if (rnd > 0.98) message.channel.send("Distinct vrací unikátní záznamy");
 });
 
 client.on(Events.InteractionCreate, async (interaction) => {
