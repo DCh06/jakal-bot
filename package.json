@@ -5,8 +5,7 @@
   "main": "./dist/index.js",
   "scripts": {
     "start": "tsc && node -r dotenv/config ./dist/index.js",
-    "build": "tsc",
-    "deploy": "tsc node -r dotenv/config ./dist/deploy.js"
+    "build": "tsc && node -r dotenv/config ./dist/deploy.js"
   },
   "keywords": [],
   "author": "",
