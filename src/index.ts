@@ -9,7 +9,6 @@ import {
 // import { ping } from "./commands/ping";
 import path from "path";
 import * as fs from "fs";
-import { log } from "console";
 require("dotenv").config();
 
 const client: Client & { commands?: Collection<any, any> } = new Client({
@@ -17,6 +16,7 @@ const client: Client & { commands?: Collection<any, any> } = new Client({
     GatewayIntentBits.Guilds,
     GatewayIntentBits.GuildMessages,
     GatewayIntentBits.MessageContent,
+    GatewayIntentBits.GuildPresences,
   ],
 });
 
@@ -76,7 +76,25 @@ client.on(Events.MessageCreate, (message: Message<boolean>) => {
   if (rnd > 0.99) message.channel.send("Distinct vrací unikátní záznamy");
 });
 
-client.on("presenceUpdate", (oldMember, newMember) => {
+let date: Date = new Date(0);
+client.on(Events.PresenceUpdate, (oldMember, newMember) => {
+  let newDate = new Date();
+  if (
+    newMember.activities.length > 0 &&
+    newDate.getTime() - date.getTime() > 600000
+  ) {
+    date = newDate;
+    const games = newMember.activities.map((game) => game.name).join(", ");
+
+    const channel = <TextChannel>(
+      client.channels.cache.get(`1111262673225654444`)
+    );
+
+    channel.send(`Vy jste šli hrát ${games} beze mě?`);
+    setTimeout(() => {
+      channel.send(`Ja jsem řekl že bych dal radši Tekkena ne že nejdu.`);
+    }, 2000);
+  }
   // const channel = (<TextChannel>client.channels.cache.get(`1111262673225654444`));
   console.log(newMember);
 });
