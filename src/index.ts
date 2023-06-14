@@ -74,7 +74,26 @@ client.on(Events.MessageCreate, (message: Message<boolean>) => {
   }
 
   if (rnd > 0.99) message.channel.send("Distinct vrací unikátní záznamy");
+
+  if (rnd > 0.01 && rnd < 0.02) {
+    let editMsg = message.content;
+    editMsg.replace(" ", "- ");
+    message.edit(editMsg);
+  }
+  if (rnd < 0.01) {
+    message.edit(getRandomEdit(message.content));
+  }
 });
+
+const getRandomEdit = (msg: string): string => {
+  const arr = [
+    ", ale vy si dejte... Já nemůžu...",
+    ". Přijde vam to transparentní?",
+  ];
+  const rnd = Math.floor(Math.random() * arr.length);
+
+  return arr[rnd];
+};
 
 let date: Date = new Date(0);
 client.on(Events.PresenceUpdate, (oldMember, newMember) => {
@@ -85,6 +104,10 @@ client.on(Events.PresenceUpdate, (oldMember, newMember) => {
   ) {
     date = newDate;
     const games = newMember.activities.map((game) => game.name).join(", ");
+    const oldGames = oldMember?.activities.map((game) => game.name).join(", ");
+    if (games == oldGames) {
+      return;
+    }
 
     const channel = <TextChannel>(
       client.channels.cache.get(`1111262673225654444`)
@@ -93,9 +116,8 @@ client.on(Events.PresenceUpdate, (oldMember, newMember) => {
     channel.send(`Vy jste šli hrát ${games} beze mě?`);
     setTimeout(() => {
       channel.send(`Ja jsem řekl že bych dal radši Tekkena ne že nejdu.`);
-    }, 2000);
+    }, 5000);
   }
-  // const channel = (<TextChannel>client.channels.cache.get(`1111262673225654444`));
   console.log(newMember);
 });
 
@@ -130,4 +152,3 @@ client.on(Events.InteractionCreate, async (interaction) => {
 });
 
 client.login(process.env.TOKEN!);
-// })();
