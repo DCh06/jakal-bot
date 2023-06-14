@@ -87,12 +87,12 @@ client.on(Events.MessageCreate, (message: Message<boolean>) => {
 
 const getRandomEdit = (msg: string): string => {
   const arr = [
-    ", ale vy si dejte... Já nemůžu...",
-    ". Přijde vam to transparentní?",
+    "... Ale vy si dejte... Já nemůžu...",
+    "... Přijde vam to transparentní?",
   ];
   const rnd = Math.floor(Math.random() * arr.length);
 
-  return arr[rnd];
+  return msg + arr[rnd];
 };
 
 let date: Date = new Date(0);
