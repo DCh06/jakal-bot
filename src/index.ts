@@ -64,7 +64,7 @@ client.on(Events.MessageCreate, (message: Message<boolean>) => {
     );
   }
 
-  if (rnd < 0.05) message.react("👍");
+  if (rnd > 0.3 && rnd < 0.05) message.react("👍");
 
   if (rnd > 0.08 && rnd <= 0.09) {
     message.channel.send(
@@ -74,26 +74,7 @@ client.on(Events.MessageCreate, (message: Message<boolean>) => {
   }
 
   if (rnd > 0.99) message.channel.send("Distinct vrací unikátní záznamy");
-
-  if (rnd > 0.01 && rnd < 0.02) {
-    let editMsg = message.content;
-    editMsg.replace(" ", "- ");
-    message.edit(editMsg);
-  }
-  if (rnd < 0.01) {
-    message.edit(getRandomEdit(message.content));
-  }
 });
-
-const getRandomEdit = (msg: string): string => {
-  const arr = [
-    "... Ale vy si dejte... Já nemůžu...",
-    "... Přijde vam to transparentní?",
-  ];
-  const rnd = Math.floor(Math.random() * arr.length);
-
-  return msg + arr[rnd];
-};
 
 let date: Date = new Date(0);
 client.on(Events.PresenceUpdate, (oldMember, newMember) => {
