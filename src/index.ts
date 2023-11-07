@@ -11,11 +11,15 @@ import path from "path";
 import * as fs from "fs";
 import {
   alriiiight,
+  bylo,
   distinctVraci,
+  ehrman,
   jakalPoznasAzBudesMitDeti,
   jakalThumbsUp,
   jakalUrgo,
+  matyJudo,
   naStojaka,
+  prajzka,
   redflag,
 } from "./message/mesage-respones";
 import { jakalVyJsteSliHratBezeMe } from "./pressence/presence-responses";
@@ -73,6 +77,14 @@ const loadedFunctions = [
   jakalThumbsUp,
   jakalThumbsUp,
   jakalThumbsUp,
+  jakalThumbsUp,
+  jakalThumbsUp,
+  jakalThumbsUp,
+  jakalThumbsUp,
+  jakalThumbsUp,
+  jakalThumbsUp,
+  jakalThumbsUp,
+  jakalThumbsUp,
   jakalPoznasAzBudesMitDeti,
   jakalPoznasAzBudesMitDeti,
   jakalPoznasAzBudesMitDeti,
@@ -86,22 +98,37 @@ const loadedFunctions = [
   redflag,
   naStojaka,
   naStojaka,
+  matyJudo,
 ];
 
 client.on(Events.MessageCreate, (message: Message<boolean>) => {
   const rnd = Math.random();
   console.log(rnd);
 
-  if (message.author.bot)  { return; }
+  if (message.author.bot) {
+    return;
+  }
   if (message.content.indexOf("backlog") > -1) {
     jakalUrgo(message);
     return;
   }
 
-  let rndResponse =
-    loadedFunctions[Math.floor(loadedFunctions.length * Math.random())];
+  if (message.content.indexOf("hrman") > -1) {
+    ehrman(message);
+    return;
+  }
 
-  if (rnd < 0.3) {
+  if (message.content.indexOf("praj") > -1) {
+    prajzka(message);
+    return;
+  }
+
+  if (message.content.indexOf("bylo") > -1 && rnd > 0.7) {
+    bylo(message);
+  }
+  if (rnd < 0.1) {
+    let rndResponse =
+      loadedFunctions[Math.floor(loadedFunctions.length * Math.random())];
     rndResponse(message);
   }
 });
