@@ -9,6 +9,16 @@ import {
 // import { ping } from "./commands/ping";
 import path from "path";
 import * as fs from "fs";
+import {
+  alriiiight,
+  distinctVraci,
+  jakalPoznasAzBudesMitDeti,
+  jakalThumbsUp,
+  jakalUrgo,
+  naStojaka,
+  redflag,
+} from "./message/mesage-respones";
+import { jakalVyJsteSliHratBezeMe } from "./pressence/presence-responses";
 require("dotenv").config();
 
 const client: Client & { commands?: Collection<any, any> } = new Client({
@@ -54,52 +64,50 @@ client.on(Events.InteractionCreate, (interaction) => {
   console.log(interaction);
 });
 
+const loadedFunctions = [
+  jakalThumbsUp,
+  jakalThumbsUp,
+  jakalThumbsUp,
+  jakalThumbsUp,
+  jakalThumbsUp,
+  jakalThumbsUp,
+  jakalThumbsUp,
+  jakalThumbsUp,
+  jakalPoznasAzBudesMitDeti,
+  jakalPoznasAzBudesMitDeti,
+  jakalPoznasAzBudesMitDeti,
+  jakalPoznasAzBudesMitDeti,
+  jakalPoznasAzBudesMitDeti,
+  distinctVraci,
+  distinctVraci,
+  distinctVraci,
+  alriiiight,
+  alriiiight,
+  redflag,
+  naStojaka,
+  naStojaka,
+];
+
 client.on(Events.MessageCreate, (message: Message<boolean>) => {
   const rnd = Math.random();
   console.log(rnd);
 
+  if (message.author.bot)  { return; }
   if (message.content.indexOf("backlog") > -1) {
-    message.channel.send(
-      `Okey a mam to nějak urgovat? Bando? Ještě nějak jak s tim mužu pomoct?`
-    );
-  }
-
-  if (rnd > 0.3 && rnd < 0.05) message.react("👍");
-
-  if (rnd > 0.08 && rnd <= 0.09) {
-    message.channel.send(
-      `Taky bych ${message.content}, ale to poznáš až budeš mít děti`
-    );
+    jakalUrgo(message);
     return;
   }
 
-  if (rnd > 0.99) message.channel.send("Distinct vrací unikátní záznamy");
+  let rndResponse =
+    loadedFunctions[Math.floor(loadedFunctions.length * Math.random())];
+
+  if (rnd < 0.3) {
+    rndResponse(message);
+  }
 });
 
-let date: Date = new Date(0);
 client.on(Events.PresenceUpdate, (oldMember, newMember) => {
-  let newDate = new Date();
-  if (
-    newMember.activities.length > 0 &&
-    newDate.getTime() - date.getTime() > 600000
-  ) {
-    date = newDate;
-    const games = newMember.activities.map((game) => game.name).join(", ");
-    const oldGames = oldMember?.activities.map((game) => game.name).join(", ");
-    if (games == oldGames) {
-      return;
-    }
-
-    const channel = <TextChannel>(
-      client.channels.cache.get(`1111262673225654444`)
-    );
-
-    channel.send(`Vy jste šli hrát ${games} beze mě?`);
-    setTimeout(() => {
-      channel.send(`Ja jsem řekl že bych dal radši Tekkena ne že nejdu.`);
-    }, 5000);
-  }
-  console.log(newMember);
+  jakalVyJsteSliHratBezeMe(oldMember, newMember, client);
 });
 
 client.on(Events.InteractionCreate, async (interaction) => {
