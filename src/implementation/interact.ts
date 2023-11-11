@@ -13,12 +13,12 @@ export function handleMessage() {
   client.on(Events.MessageCreate, (message: Message<boolean>) => {
     const rnd = Math.random();
     console.log(respPercentages);
-    
+
     if (client.user?.id && message.mentions.members?.has(client.user?.id) || message.content.toLocaleLowerCase().indexOf('jakal') > -1) {
       increaseChance(respPercentages)
     }
 
-    if(shouldDecreaseChance(message, respPercentages)) {
+    if (shouldDecreaseChance(message, respPercentages)) {
       message.channel.send("Ale ja to dělal schválně, aby jste pochopili, že to je špatně!")
       decreaseChance(respPercentages)
       return;
@@ -41,7 +41,7 @@ export function handleMessage() {
     if (rnd < respPercentages.probabilityFairResponseChance) {
       const randomRes = Math.random()
       console.log(randomRes, Math.floor(probabilityFairResponses.length * randomRes));
-      
+
       let rndResponse = probabilityFairResponses[Math.floor(probabilityFairResponses.length * randomRes)];
       rndResponse(message);
     }
@@ -49,7 +49,7 @@ export function handleMessage() {
 }
 
 function shouldDecreaseChance(message: Message<boolean>, respPercentages: { probabilityFairResponseChance: number; }) {
-  
+
   const messageContent = message.content.toLocaleLowerCase();
   const containsDrz = messageContent.indexOf('drz') > -1 || messageContent.indexOf('drž') > -1
   const containsPicuHubu = messageContent.indexOf('hubu') > -1 || messageContent.indexOf('picu') > -1 || messageContent.indexOf('piču') > -1
@@ -128,7 +128,6 @@ function increaseChance(chances: any) {
 }
 
 function decreaseChance(chances: any) {
-  chances.probabilityFairResponseChance = 0.7
- ;
+  chances.probabilityFairResponseChance = 0.7;
 }
 

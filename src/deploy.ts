@@ -1,5 +1,4 @@
-import { Collection, REST, Routes } from "discord.js";
-import * as ping from "./commands/test/ping";
+import { REST, Routes } from "discord.js";
 import path from "path";
 import * as fs from "fs";
 require("dotenv").config();

@@ -1,4 +1,4 @@
-import { Message, RawFile } from "discord.js";
+import { Message } from "discord.js";
 
 const jakalThumbsUp = (message: Message<boolean>) => {
   message.react("👍");
@@ -31,18 +31,34 @@ const redflag = (message: Message<boolean>) => {
   );
 }
 
+const jakalSeZenouNaDovolene = (message: Message<boolean>) => {
+  const dateNow = new Date();
+  const initialDate = new Date("11-09-2017");
+
+  const randomDateSpan = dateNow.getTime() - initialDate.getTime();
+  // initialDate + difference between initial date and current date * random(0,1);
+  const randomDate = new Date(initialDate.getTime() + Math.floor(Math.random()*randomDateSpan))
+
+  const [year, month, day] = [randomDate.getFullYear().toString().padStart(2, "0"), (randomDate.getMonth() + 1).toString().padStart(2, "0"), randomDate.getDate().toString().padStart(2, "0")];
+  const url = `https://cdn6.babeherder.com/repo-0002/babes/${year}/${month}/${day}/mozaic.jpg`
+  
+  message.channel.send({
+    files: [url]
+  });
+  message.channel.send(`Tady je moje žena na dovolené, jak jsme byli spolu, než se narodila dcera. Pak se všechno posralo.`)
+
+}
+
 const naStojaka = (message: Message<boolean>) => {
-  setTimeout(() => message.channel.send(`Radku?`), 60000);
-
-  setTimeout(() => message.channel.send(`Hej, Radku?`), 90000);
-
-  setTimeout(() => message.channel.send(`Na stojáka?😉`), 120000);
+  setTimeout(() => message.channel.send(`Radku?`), 30000);
+  setTimeout(() => message.channel.send(`Hej, Radku?`), 60000);
+  setTimeout(() => message.channel.send(`Na stojáka?😉`), 90000);
 }
 
 const matyJudo = (message: Message<boolean>) => {
   setTimeout(
     () => message.channel.send(`Včera jsem byl s Matym na judu.😉`),
-    120000
+    30000
   );
 }
 
@@ -52,7 +68,7 @@ const ehrman = (message: Message<boolean>) => {
       message.channel.send(
         `To u nas není, to už se neprodává, to mají jenom v Polsku. 😉`
       ),
-    90000
+    30000
   );
 }
 
@@ -60,18 +76,13 @@ const prajzka = (message: Message<boolean>) => {
   setTimeout(
     () =>
       message.channel.send(`Hlučín není prajzská. To vím jsem tam bydlel. 😉`),
-    90000
+    30000
   );
 }
 
 const bylo = (message: Message<boolean>) => {
   setTimeout(() => message.channel.send(`Za mě to tak nebylo. 😉`), 30000);
 }
-
-// export const staticResponess: { response: (message: Message) => void }[] = [{
-//   message.content.indexOf("backlog") > -1
-// }]
-
 
 const staticJakalUrgo = (message: Message) => {
   if (message.content.indexOf("backlog") > -1) {
@@ -101,7 +112,7 @@ const staticJakalBylo = (message: Message) => {
   }
 }
 
-export const staticConditionalRespones: ((message:Message)=>boolean | undefined)[] = [
+export const staticConditionalRespones: ((message: Message) => boolean | undefined)[] = [
   staticJakalUrgo,
   staticJakalEhrman,
   staticJakalPrajzka,
@@ -146,6 +157,7 @@ export const probabilityFairResponses = [
   redflag,
   redflag,
   naStojaka,
-  naStojaka,
   matyJudo,
+  jakalSeZenouNaDovolene,
+  jakalSeZenouNaDovolene,
 ];

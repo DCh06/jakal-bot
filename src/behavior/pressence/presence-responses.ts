@@ -22,6 +22,7 @@ export function jakalVyJsteSliHratBezeMe(
     }
 
     const channel = <TextChannel>(
+      // todo get dynamically
       client.channels.cache.get(`1111262673225654444`)
     );
 
