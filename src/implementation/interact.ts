@@ -55,7 +55,7 @@ function shouldDecreaseChance(message: Message<boolean>, respPercentages: { prob
   const containsDrz = messageContent.indexOf('drz') > -1 || messageContent.indexOf('drž') > -1
   const containsPicuHubu = messageContent.indexOf('hubu') > -1 || messageContent.indexOf('picu') > -1 || messageContent.indexOf('piču') > -1
   const kokote = messageContent.indexOf('kokote') > -1
-  return respPercentages.probabilityFairResponseChance > 0.7 && ((containsDrz && containsPicuHubu) || kokote);
+  return respPercentages.probabilityFairResponseChance > 0.07 && ((containsDrz && containsPicuHubu) || kokote);
 
 }
 
@@ -129,6 +129,6 @@ function increaseChance(chances: any) {
 }
 
 function decreaseChance(chances: any) {
-  chances.probabilityFairResponseChance = 0.7;
+  chances.probabilityFairResponseChance = 0.07;
 }
 
