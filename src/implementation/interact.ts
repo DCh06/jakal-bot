@@ -5,11 +5,12 @@ import path from "path";
 import * as fs from "fs";
 import { probabilityFairResponses, staticConditionalRespones } from "../behavior/message/mesage-respones";
 
+let respPercentages = {
+  probabilityFairResponseChance: 0.07,
+}
 
 export function handleMessage() {
-  let respPercentages = {
-    probabilityFairResponseChance: 0.07,
-  }
+ 
   client.on(Events.MessageCreate, (message: Message<boolean>) => {
     const rnd = Math.random();
     console.log(respPercentages);
