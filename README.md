@@ -1,4 +1,4 @@
-Předmět: Legenda o mistrovi SCRUMu Jakalovi a jeho dobrotivých činech pro svět
+# Legenda o mistrovi SCRUMu Jakalovi a jeho dobrotivých činech pro svět
 
 Hvězdné datum: 1533,6
 
@@ -14,11 +14,11 @@ Je důležité si připomenout, že Jakal a jeho SCRUM tým nejsou pouze legendo
 
 Děkuji za vaši pozornost.
 
-S pozdravem,
+S pozdravem,  
+Danny
 
-Danny,
-✅ Otec,
-✅ Programator,
-✅ Váš laskavý chachar
+✅ Otec  
+✅ Programator  
+✅ Váš laskavý chachar  
 
 Věnováno od srdce firmě tři pilíř globální
