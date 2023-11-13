@@ -1,4 +1,6 @@
 import { Client, Presence, TextChannel } from "discord.js";
+import { addJakaliky } from "../../queries/add-jakaliky";
+import { jakalikyRef } from "../../utils/references";
 
 let date: Date = new Date(0);
 export function jakalVyJsteSliHratBezeMe(
@@ -25,6 +27,8 @@ export function jakalVyJsteSliHratBezeMe(
       // todo get dynamically
       client.channels.cache.get(`1111262673225654444`)
     );
+    
+    if(newMember.user) addJakaliky(newMember.user, jakalikyRef['bonz'], "Jakal tě bonznul lol");
 
     channel.send(`Vy jste šli hrát ${games} beze mě?`);
     setTimeout(() => {

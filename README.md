@@ -22,3 +22,10 @@ Danny
 ✅ Váš laskavý chachar  
 
 Věnováno od srdce firmě tři pilíř globální
+
+---
+
+`npx prisma studio` -- open prisma studio
+`npx prisma db push` -- push new schema - planetscale takes care of migrations?
+
+

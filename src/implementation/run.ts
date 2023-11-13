@@ -3,6 +3,7 @@ import { Collection, Events } from "discord.js";
 import { client } from "./client";
 
 import { handleMessage, handlePresenceUpdate, handleInteraction, loadCommands } from "./interact";
+import prisma from "../db";
 
 
 export const run = () => {
@@ -15,6 +16,5 @@ export const run = () => {
     handleMessage();
     handlePresenceUpdate();
     handleInteraction();
-
     client.login(process.env.TOKEN!);
 }

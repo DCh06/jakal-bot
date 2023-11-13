@@ -1,19 +1,30 @@
-import { Collection, Events, Message } from "discord.js";
+import { Collection, Events, Message, User } from "discord.js";
 import { jakalVyJsteSliHratBezeMe } from "../behavior/pressence/presence-responses";
 import { client } from "./client";
 import path from "path";
 import * as fs from "fs";
 import { probabilityFairResponses, staticConditionalRespones } from "../behavior/message/mesage-respones";
+import prisma from "../db";
+import { addJakaliky } from "../queries/add-jakaliky";
+import { agilniSlova, jakalikyRef } from "../utils/references";
 
 let respPercentages = {
   probabilityFairResponseChance: 0.07,
 }
 
 export function handleMessage() {
- 
+
   client.on(Events.MessageCreate, (message: Message<boolean>) => {
     const rnd = Math.random();
     console.log(respPercentages);
+
+    if (message.author.bot) {
+      return;
+    }
+
+    if (agilniCheck(message)) {
+      addJakaliky(message.author, jakalikyRef["agilni veta"], "Agilní check!");
+    }
 
     if (client.user?.id && message.mentions.members?.has(client.user?.id) || message.content.toLocaleLowerCase().indexOf('jakal') > -1) {
       increaseChance(respPercentages)
@@ -25,22 +36,20 @@ export function handleMessage() {
       return;
     }
 
-    if (message.author.bot) {
-      return;
-    }
-
     let staticConditionalResponseRun = false;
     staticConditionalRespones
       .forEach((staticConditionalRespone) => {
         if (staticConditionalRespone(message)) {
           staticConditionalResponseRun = true;
           console.log(staticConditionalResponseRun)
+          addJakaliky(message.author, jakalikyRef["static agile"], "Agilní check!");
           return;
         }
       })
 
-    if (rnd < respPercentages.probabilityFairResponseChance) {
+    if (rnd < respPercentages.probabilityFairResponseChance && !staticConditionalResponseRun) {
       const randomRes = Math.random()
+      addJakaliky(message.author, jakalikyRef["probability"], "Agilní check!");
       console.log(randomRes, Math.floor(probabilityFairResponses.length * randomRes));
 
       let rndResponse = probabilityFairResponses[Math.floor(probabilityFairResponses.length * randomRes)];
@@ -48,6 +57,8 @@ export function handleMessage() {
     }
   });
 }
+
+
 
 function shouldDecreaseChance(message: Message<boolean>, respPercentages: { probabilityFairResponseChance: number; }) {
 
@@ -131,4 +142,11 @@ function increaseChance(chances: any) {
 function decreaseChance(chances: any) {
   chances.probabilityFairResponseChance = 0.07;
 }
+
+function agilniCheck(message: Message) {
+  return agilniSlova.some((text) => message.content.includes(text))
+}
+
+
+
 
