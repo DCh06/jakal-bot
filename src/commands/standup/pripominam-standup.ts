@@ -41,7 +41,7 @@ export const command = {
         const discordId = interaction.user.id;
         const description = interaction.options.get('popis') as unknown as string;
         const channelId = interaction.channelId;
-        console.log(getDateSpanMilis(new Date(), dateOfStandup) < 30 * 60 * 1000,new Date(), dateOfStandup );
+        console.log(getDateSpanMilis(new Date(), dateOfStandup) < 30 * 60 * 1000,new Date(), dateOfStandup, new Date(utcTimeOfStandup) );
         
         // if less than 30 dont save to db
         if( getDateSpanMilis(new Date(), dateOfStandup) < 30 * 60 * 1000) {
