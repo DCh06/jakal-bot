@@ -1,4 +1,5 @@
 import { Message } from "discord.js";
+import { generateRandomDateInBoundaries } from "../utils/random-generators";
 
 const jakalThumbsUp = (message: Message<boolean>) => {
   message.react("👍");
@@ -34,10 +35,9 @@ const redflag = (message: Message<boolean>) => {
 const jakalSeZenouNaDovolene = (message: Message<boolean>) => {
   const dateNow = new Date();
   const initialDate = new Date("11-09-2017");
-
-  const randomDateSpan = dateNow.getTime() - initialDate.getTime();
   // initialDate + difference between initial date and current date * random(0,1);
-  const randomDate = new Date(initialDate.getTime() + Math.floor(Math.random()*randomDateSpan))
+  // const randomDate = new Date(initialDate.getTime() + Math.floor(Math.random()*randomDateSpan))
+  const randomDate = generateRandomDateInBoundaries(initialDate, dateNow)
 
   const [year, month, day] = [randomDate.getFullYear().toString().padStart(2, "0"), (randomDate.getMonth() + 1).toString().padStart(2, "0"), randomDate.getDate().toString().padStart(2, "0")];
   const url = `https://cdn6.babeherder.com/repo-0002/babes/${year}/${month}/${day}/mozaic.jpg`

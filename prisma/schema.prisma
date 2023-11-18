@@ -12,11 +12,12 @@ generator client {
 }
 
 model User {
-  discordId      String           @id
-  createdAt      DateTime         @default(now())
-  name           String?
-  jakalikBalance Int
-  jakalikHistory JakalikHistory[]
+  discordId         String              @id @unique
+  createdAt         DateTime            @default(now())
+  name              String?
+  jakalikBalance    Int
+  jakalikHistory    JakalikHistory[]
+  pripominamStandup PripominamStandup[]
 }
 
 model JakalikHistory {
@@ -26,6 +27,18 @@ model JakalikHistory {
   discordId       String
   reason          String
   balanceMovement Int
+
+  @@index([discordId])
+}
+
+model PripominamStandup {
+  id          Int      @id @default(autoincrement())
+  user        User     @relation(fields: [discordId], references: [discordId])
+  discordId   String
+  channelId   String
+  time        DateTime
+  description String?
+  finished    Boolean @default(false)
 
   @@index([discordId])
 }

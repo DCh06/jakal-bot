@@ -1,6 +1,6 @@
 import { Client, Presence, TextChannel } from "discord.js";
-import { addJakaliky } from "../../queries/add-jakaliky";
-import { jakalikyRef } from "../../utils/references";
+import { addJakaliky } from "../queries/add-jakaliky";
+import { jakalikyRef } from "../utils/references";
 
 let date: Date = new Date(0);
 export function jakalVyJsteSliHratBezeMe(

@@ -1,9 +1,9 @@
 import { Collection, Events, Message, User } from "discord.js";
-import { jakalVyJsteSliHratBezeMe } from "../behavior/pressence/presence-responses";
+import { jakalVyJsteSliHratBezeMe } from "../pressence/presence-responses";
 import { client } from "./client";
 import path from "path";
 import * as fs from "fs";
-import { probabilityFairResponses, staticConditionalRespones } from "../behavior/message/mesage-respones";
+import { probabilityFairResponses, staticConditionalRespones } from "../message/mesage-respones";
 import prisma from "../db";
 import { addJakaliky } from "../queries/add-jakaliky";
 import { agilniSlova, jakalikyRef } from "../utils/references";
@@ -93,14 +93,14 @@ export function handleInteraction() {
       await command.execute(interaction);
     } catch (error) {
       console.error(error);
-      if (interaction.replied || interaction.deferred) {
-        await interaction.followUp({
-          content: "There was an error while executing this command!",
+      if (interaction.replied || !interaction.deferred) {
+        await interaction.reply({
+          content: "There was an error while executing this command! lol",
           ephemeral: true,
         });
-      } else {
+      } else if (!interaction.deferred) {
         await interaction.reply({
-          content: "There was an error while executing this command!",
+          content: "There was an error while executing this command! lel",
           ephemeral: true,
         });
       }
