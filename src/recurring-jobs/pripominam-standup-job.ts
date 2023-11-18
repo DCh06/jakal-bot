@@ -62,6 +62,8 @@ export const standupJob = cron.schedule("* */30 * * * *", async function () {
 export function pripominumStandupJobGroCronuNehe(standupPripomenutis: Pick<PripominamStandup, 'time' | 'channelId'>[]) {
     standupPripomenutis.forEach((standupPripomenuti) => {
         const casyPripomenutiProTentoStandup = randomizePripomenuti(standupPripomenuti, client);
+        console.log("tento standup",casyPripomenutiProTentoStandup);
+        
         const deltaTimeoutyProTentoStandup = calculateDeltaTimeoutPripominamStandup(standupPripomenuti, casyPripomenutiProTentoStandup);
         pripominamStandupActionLesgo(standupPripomenuti, deltaTimeoutyProTentoStandup);
     });
