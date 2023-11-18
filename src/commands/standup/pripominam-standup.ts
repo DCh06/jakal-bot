@@ -41,10 +41,12 @@ export const command = {
         const discordId = interaction.user.id;
         const description = interaction.options.get('popis') as unknown as string;
         const channelId = interaction.channelId;
-
+        console.log(getDateSpanMilis(new Date(), dateOfStandup) < 30 * 60 * 1000,new Date(), dateOfStandup );
+        
         // if less than 30 dont save to db
         if( getDateSpanMilis(new Date(), dateOfStandup) < 30 * 60 * 1000) {
             // TODO maybe this will fuckup 
+
             let hackyPickData: Pick<PripominamStandup, 'time' | 'channelId'> = {time: dateOfStandup, channelId};
             pripominumStandupJobGroCronuNehe([hackyPickData]);
             interaction.editReply({content: "Dej si! "});
@@ -60,6 +62,8 @@ export const command = {
                     channelId,
                 }
             });
+            console.log("in db",pripominamStandup);
+            
 
             interaction.editReply({content: "Dej si! "})
         } catch ( e ) {
