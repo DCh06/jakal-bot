@@ -36,12 +36,12 @@ export const command = {
         }
         const dateString = (interaction.options.get('cas')?.value) as unknown as string;
         const dateOfStandup = new Date(dateString);
-        const utcTimeOfStandup = dayjs.utc(dateOfStandup).format();
+        const utcTimeOfStandup = dayjs.utc(dateString).format();
 
         const discordId = interaction.user.id;
         const description = interaction.options.get('popis') as unknown as string;
         const channelId = interaction.channelId;
-        console.log(getDateSpanMilis(new Date(), dateOfStandup) < 30 * 60 * 1000,new Date(), dateOfStandup, new Date(utcTimeOfStandup) );
+        console.log(getDateSpanMilis(new Date(), dateOfStandup) < 30 * 60 * 1000,new Date(), dateOfStandup, new Date(new Date(utcTimeOfStandup).toISOString()), new Date(dateOfStandup.getTime() + dateOfStandup.getTimezoneOffset() * 60000 ));
         
         // if less than 30 dont save to db
         if( getDateSpanMilis(new Date(), dateOfStandup) < 30 * 60 * 1000) {
