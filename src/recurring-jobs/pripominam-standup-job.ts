@@ -11,7 +11,7 @@ interface IDeltaCas {
     untilReminderDelta: number
 }
 
-export const standupJob = cron.schedule("*/10 * * * * *", async function () {
+export const standupJob = cron.schedule("* */30 * * * *", async function () {
     console.log("running cron");
     
     try {
