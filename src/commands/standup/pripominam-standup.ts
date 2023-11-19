@@ -42,26 +42,25 @@ export const command = {
         // const utcTimeOfStandup = dayjs.utc(dateString).locale();
         // const utcTimeOfStandup2 = dayjs(dateString).locale();
         // const utcTimeOfStandup3 = dayjs(dateString).utc().locale();
-        const utcTimeOfStandup2 = dayjs.tz(new Date(), "Europe/Prague") // '2013-11-18T11:55:20-05:00'
-        const utcTimeOfStandup3 = dayjs.tz(new Date(), "Europe/Prague").toDate() // '2013-11-18T11:55:20-05:00'
-        const utcTimeOfStandup4 = dayjs.tz(new Date(), "Europe/Prague").utc().toDate() // '2013-11-18T11:55:20-05:00'
+        // const utcTimeOfStandup2 = dayjs.tz(new Date(), "Europe/Prague") // '2013-11-18T11:55:20-05:00'
+        // const utcTimeOfStandup3 = dayjs.tz(new Date(), "Europe/Prague").toDate() // '2013-11-18T11:55:20-05:00'
+        // const utcTimeOfStandup4 = dayjs.tz(new Date(), "Europe/Prague").utc().toDate() // '2013-11-18T11:55:20-05:00'
 
         // Converting (from time zone 'Europe/Berlin'!)
-        const utcTimeOfStandup5 =  dayjs(new Date()).tz("Europe/Prague")
+        // const utcTimeOfStandup5 =  dayjs(new Date()).tz("Europe/Prague")
         const utcTimeOfStandup6 =  dayjs(new Date()).tz("Europe/Prague").toDate()
-        const utcTimeOfStandup7 =  dayjs(new Date()).tz("Europe/Prague").utc().toDate()
+        // const utcTimeOfStandup7 =  dayjs(new Date()).tz("Europe/Prague").utc().toDate()
 
 
         const discordId = interaction.user.id;
         const description = interaction.options.get('popis') as unknown as string;
         const channelId = interaction.channelId;
-        console.log(utcTimeOfStandup3, utcTimeOfStandup4, utcTimeOfStandup6, utcTimeOfStandup7);
 
         // if less than 30 dont save to db
-        if (getDateSpanMilis(new Date(), dateOfStandup) < 30 * 60 * 1000) {
+        if (getDateSpanMilis(new Date(), utcTimeOfStandup6) < 30 * 60 * 1000) {
             // TODO maybe this will fuckup 
 
-            let hackyPickData: Pick<PripominamStandup, 'time' | 'channelId'> = { time: dateOfStandup, channelId };
+            let hackyPickData: Pick<PripominamStandup, 'time' | 'channelId'> = { time: utcTimeOfStandup6, channelId };
             pripominumStandupJobGroCronuNehe([hackyPickData]);
             interaction.editReply({ content: "Dej si! " });
             return;
@@ -71,7 +70,7 @@ export const command = {
             let pripominamStandup = await prisma.pripominamStandup.create({
                 data: {
                     discordId,
-                    time: utcTimeOfStandup,
+                    time: utcTimeOfStandup6,
                     description,
                     channelId,
                 }
