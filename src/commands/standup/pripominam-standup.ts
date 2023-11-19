@@ -37,19 +37,20 @@ export const command = {
             return;
         }
         const dateString = (interaction.options.get('cas')?.value) as unknown as string;
+        // todo clean
         const dateOfStandup = new Date(dateString);
         const utcTimeOfStandup = dayjs.utc(dateString).toDate();
         // const utcTimeOfStandup = dayjs.utc(dateString).locale();
         // const utcTimeOfStandup2 = dayjs(dateString).locale();
         // const utcTimeOfStandup3 = dayjs(dateString).utc().locale();
-        const utcTimeOfStandup2 = dayjs.tz(dateString, "Europe/Prague") // '2013-11-18T11:55:20-05:00'
-        const utcTimeOfStandup3 = dayjs.tz(dateString, "Europe/Prague").toDate() // '2013-11-18T11:55:20-05:00'
-        const utcTimeOfStandup4 = dayjs.tz(dateString, "Europe/Prague").utc().toDate() // '2013-11-18T11:55:20-05:00'
+        // const utcTimeOfStandup2 = dayjs.tz(dateString, "Europe/Prague") // '2013-11-18T11:55:20-05:00'
+        // const utcTimeOfStandup3 = dayjs.tz(dateString, "Europe/Prague").toDate() // '2013-11-18T11:55:20-05:00'
+        // const utcTimeOfStandup4 = dayjs.tz(dateString, "Europe/Prague").utc().toDate() // '2013-11-18T11:55:20-05:00'
 
-        // Converting (from time zone 'Europe/Berlin'!)
-        const utcTimeOfStandup5 =  dayjs(dateString).tz("Europe/Prague")
-        const utcTimeOfStandup6 =  dayjs(dateString).tz("Europe/Prague").toDate()
-        const utcTimeOfStandup7 =  dayjs(dateString).tz("Europe/Prague").utc().toDate()
+        // // Converting (from time zone 'Europe/Berlin'!)
+        // const utcTimeOfStandup5 =  dayjs(dateString).tz("Europe/Prague")
+        // const utcTimeOfStandup6 =  dayjs(dateString).tz("Europe/Prague").toDate()
+        // const utcTimeOfStandup7 =  dayjs(dateString).tz("Europe/Prague").utc().toDate()
 
 
         console.log(utcTimeOfStandup3, utcTimeOfStandup4,utcTimeOfStandup6,utcTimeOfStandup7);
@@ -59,11 +60,11 @@ export const command = {
         const channelId = interaction.channelId;
 
         // if less than 30 dont save to db
-        console.log(new Date(), utcTimeOfStandup6)
-        if (getDateSpanMilis(new Date(), utcTimeOfStandup6) < 30 * 60 * 1000) {
+        console.log(new Date(), utcTimeOfStandup3)
+        if (getDateSpanMilis(new Date(), utcTimeOfStandup3) < 30 * 60 * 1000) {
             // TODO maybe this will fuckup 
 
-            let hackyPickData: Pick<PripominamStandup, 'time' | 'channelId'> = { time: utcTimeOfStandup6, channelId };
+            let hackyPickData: Pick<PripominamStandup, 'time' | 'channelId'> = { time: utcTimeOfStandup3, channelId };
             pripominumStandupJobGroCronuNehe([hackyPickData]);
             interaction.editReply({ content: "Dej si! " });
             return;
@@ -73,7 +74,7 @@ export const command = {
             let pripominamStandup = await prisma.pripominamStandup.create({
                 data: {
                     discordId,
-                    time: utcTimeOfStandup6,
+                    time: utcTimeOfStandup3,
                     description,
                     channelId,
                 }
