@@ -44,7 +44,7 @@ export const command = {
         // const utcTimeOfStandup2 = dayjs(dateString).locale();
         // const utcTimeOfStandup3 = dayjs(dateString).utc().locale();
         // const utcTimeOfStandup2 = dayjs.tz(dateString, "Europe/Prague") // '2013-11-18T11:55:20-05:00'
-        // const utcTimeOfStandup3 = dayjs.tz(dateString, "Europe/Prague").toDate() // '2013-11-18T11:55:20-05:00'
+        const utcTimeOfStandup3 = dayjs.tz(dateString, "Europe/Prague").toDate() // '2013-11-18T11:55:20-05:00'
         // const utcTimeOfStandup4 = dayjs.tz(dateString, "Europe/Prague").utc().toDate() // '2013-11-18T11:55:20-05:00'
 
         // // Converting (from time zone 'Europe/Berlin'!)
@@ -53,7 +53,7 @@ export const command = {
         // const utcTimeOfStandup7 =  dayjs(dateString).tz("Europe/Prague").utc().toDate()
 
 
-        console.log(utcTimeOfStandup3, utcTimeOfStandup4,utcTimeOfStandup6,utcTimeOfStandup7);
+        // console.log(utcTimeOfStandup3, utcTimeOfStandup4,utcTimeOfStandup6,utcTimeOfStandup7);
         
         const discordId = interaction.user.id;
         const description = interaction.options.get('popis') as unknown as string;
