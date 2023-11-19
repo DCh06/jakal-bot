@@ -52,6 +52,8 @@ export const command = {
         const utcTimeOfStandup7 =  dayjs(dateString).tz("Europe/Prague").utc().toDate()
 
 
+        console.log(utcTimeOfStandup3, utcTimeOfStandup4,utcTimeOfStandup6,utcTimeOfStandup7);
+        
         const discordId = interaction.user.id;
         const description = interaction.options.get('popis') as unknown as string;
         const channelId = interaction.channelId;
