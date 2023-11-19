@@ -42,14 +42,14 @@ export const command = {
         // const utcTimeOfStandup = dayjs.utc(dateString).locale();
         // const utcTimeOfStandup2 = dayjs(dateString).locale();
         // const utcTimeOfStandup3 = dayjs(dateString).utc().locale();
-        // const utcTimeOfStandup2 = dayjs.tz(new Date(), "Europe/Prague") // '2013-11-18T11:55:20-05:00'
-        // const utcTimeOfStandup3 = dayjs.tz(new Date(), "Europe/Prague").toDate() // '2013-11-18T11:55:20-05:00'
-        // const utcTimeOfStandup4 = dayjs.tz(new Date(), "Europe/Prague").utc().toDate() // '2013-11-18T11:55:20-05:00'
+        const utcTimeOfStandup2 = dayjs.tz(dateString, "Europe/Prague") // '2013-11-18T11:55:20-05:00'
+        const utcTimeOfStandup3 = dayjs.tz(dateString, "Europe/Prague").toDate() // '2013-11-18T11:55:20-05:00'
+        const utcTimeOfStandup4 = dayjs.tz(dateString, "Europe/Prague").utc().toDate() // '2013-11-18T11:55:20-05:00'
 
         // Converting (from time zone 'Europe/Berlin'!)
-        // const utcTimeOfStandup5 =  dayjs(new Date()).tz("Europe/Prague")
-        const utcTimeOfStandup6 =  dayjs(new Date()).tz("Europe/Prague").toDate()
-        // const utcTimeOfStandup7 =  dayjs(new Date()).tz("Europe/Prague").utc().toDate()
+        const utcTimeOfStandup5 =  dayjs(dateString).tz("Europe/Prague")
+        const utcTimeOfStandup6 =  dayjs(dateString).tz("Europe/Prague").toDate()
+        const utcTimeOfStandup7 =  dayjs(dateString).tz("Europe/Prague").utc().toDate()
 
 
         const discordId = interaction.user.id;
@@ -57,6 +57,7 @@ export const command = {
         const channelId = interaction.channelId;
 
         // if less than 30 dont save to db
+        console.log(new Date(), utcTimeOfStandup6)
         if (getDateSpanMilis(new Date(), utcTimeOfStandup6) < 30 * 60 * 1000) {
             // TODO maybe this will fuckup 
 

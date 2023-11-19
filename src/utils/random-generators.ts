@@ -1,7 +1,10 @@
 //todo move random logic here
 export function generateRandomDateInBoundaries(lowerBoundary: Date, upperBoundary: Date) {
-
+    
     const randomDateSpan = getDateSpanMilis(lowerBoundary,upperBoundary);
+
+    console.log(randomDateSpan, lowerBoundary, upperBoundary);
+    
 
     return new Date(lowerBoundary.getTime() + Math.floor(Math.random() * randomDateSpan))
 

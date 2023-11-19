@@ -61,7 +61,7 @@ export const standupJob = cron.schedule("0 */30 * * * *", async function () {
 // toodo move elsewhere
 export function pripominumStandupJobGroCronuNehe(standupPripomenutis: Pick<PripominamStandup, 'time' | 'channelId'>[]) {
     standupPripomenutis.forEach((standupPripomenuti) => {
-        const casyPripomenutiProTentoStandup = randomizePripomenuti(standupPripomenuti, client);
+        const casyPripomenutiProTentoStandup = randomizePripomenuti(standupPripomenuti);
         console.log("tento standup",casyPripomenutiProTentoStandup);
         
         const deltaTimeoutyProTentoStandup = calculateDeltaTimeoutPripominamStandup(standupPripomenuti, casyPripomenutiProTentoStandup);
@@ -69,13 +69,13 @@ export function pripominumStandupJobGroCronuNehe(standupPripomenutis: Pick<Pripo
     });
 }
 
-function randomizePripomenuti(standupPripomenuti:  Pick<PripominamStandup, 'time' | 'channelId'>, client: Client) {
+function randomizePripomenuti(standupPripomenuti:  Pick<PripominamStandup, 'time' | 'channelId'>) {
     const pocetPripomenuti = Math.floor(Math.random() * 2) + 2;
     const casyPripomenuti: Date[] = [];
 
     for (let i = 0; i < pocetPripomenuti; i++) {
         // const nextLowerBoundCasPripomenuti = casyPripomenuti[i - 1] || new Date()
-        casyPripomenuti.push(generateRandomDateInBoundaries(new Date(), new Date(standupPripomenuti.time)))
+        casyPripomenuti.push(generateRandomDateInBoundaries(new Date(), standupPripomenuti.time))
     }
 
     return casyPripomenuti;
