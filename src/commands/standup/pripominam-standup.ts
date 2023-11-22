@@ -62,12 +62,11 @@ export const command = {
         // if less than 30 dont save to db
         console.log(new Date(), utcTimeOfStandup3)
         if (getDateSpanMilis(new Date(), utcTimeOfStandup3) < 30 * 60 * 1000) {
-            // TODO maybe this will fuckup 
 
             let hackyPickData: Pick<PripominamStandup, 'time' | 'channelId'> = { time: utcTimeOfStandup3, channelId };
             pripominumStandupJobGroCronuNehe([hackyPickData]);
             console.log(dayjs(utcTimeOfStandup3).locale( "Europe/Prague").format('DD/MM/YYYY v HH:m'))
-            interaction.editReply({ content: `Bando- stand up tedy v ${dayjs.tz(utcTimeOfStandup3, "Europe/Prague").format('DD/MM/YYYY v HH:mm')} ${dayjs(utcTimeOfStandup3).tz( "Europe/Prague").format('DD/MM/YYYY v HH:mm')}` });
+            interaction.editReply({ content: `Bando- stand up tedy v ${dayjs.tz(utcTimeOfStandup3, "Europe/Prague").format('DD/MM/YYYY v HH:mm')}` });
             return;
         }
 
@@ -83,8 +82,7 @@ export const command = {
             console.log("in db", pripominamStandup);
 
 
-            interaction.editReply({ content: `Bando- stand up tedy v ${dayjs.tz(utcTimeOfStandup3, "Europe/Prague").format('DD/MM/YYYY v HH:mm')} ${dayjs(utcTimeOfStandup3).tz( "Europe/Prague").format('DD/MM/YYYY v HH:mm')}` });
-        } catch (e) {
+            interaction.editReply({ content: `Bando- stand up tedy v ${dayjs.tz(utcTimeOfStandup3, "Europe/Prague").format('DD/MM/YYYY v HH:mm')}` })        } catch (e) {
 
             console.log(e)
         }

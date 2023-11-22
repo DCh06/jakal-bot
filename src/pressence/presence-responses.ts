@@ -14,7 +14,7 @@ export function jakalVyJsteSliHratBezeMe(
     newMember.activities.length > 0 &&
     newDate.getTime() - date.getTime() > 600000
   ) {
-    if (rnd < 0.2) return;
+    if (rnd > 0.2) return;
 
     date = newDate;
     const games = newMember.activities.map((game) => game.name).join(", ");
