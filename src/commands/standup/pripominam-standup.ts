@@ -66,8 +66,8 @@ export const command = {
 
             let hackyPickData: Pick<PripominamStandup, 'time' | 'channelId'> = { time: utcTimeOfStandup3, channelId };
             pripominumStandupJobGroCronuNehe([hackyPickData]);
-            
-            interaction.editReply({ content: `Bando- stand up tedy v ${dayjs(utcTimeOfStandup3).format('DD/MM/YYYY v HH:MM')}` });
+            console.log(dayjs(utcTimeOfStandup3).locale( "Europe/Prague").format('DD/MM/YYYY v HH:m'))
+            interaction.editReply({ content: `Bando- stand up tedy v ${dayjs.tz(utcTimeOfStandup3, "Europe/Prague").format('DD/MM/YYYY v HH:mm')} ${dayjs(utcTimeOfStandup3).tz( "Europe/Prague").format('DD/MM/YYYY v HH:mm')}` });
             return;
         }
 
@@ -83,7 +83,7 @@ export const command = {
             console.log("in db", pripominamStandup);
 
 
-            interaction.editReply({ content: `Bando- stand up tedy v ${dayjs(utcTimeOfStandup3).format('DD.MM.YYYY v HH:MM')}` });
+            interaction.editReply({ content: `Bando- stand up tedy v ${dayjs.tz(utcTimeOfStandup3, "Europe/Prague").format('DD/MM/YYYY v HH:mm')} ${dayjs(utcTimeOfStandup3).tz( "Europe/Prague").format('DD/MM/YYYY v HH:mm')}` });
         } catch (e) {
 
             console.log(e)
