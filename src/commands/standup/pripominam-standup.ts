@@ -66,7 +66,8 @@ export const command = {
 
             let hackyPickData: Pick<PripominamStandup, 'time' | 'channelId'> = { time: utcTimeOfStandup3, channelId };
             pripominumStandupJobGroCronuNehe([hackyPickData]);
-            interaction.editReply({ content: "Dej si! " });
+            
+            interaction.editReply({ content: `Bando- stand up tedy v ${dayjs(utcTimeOfStandup3).format('DD/MM/YYYY v HH:MM')}` });
             return;
         }
 
@@ -82,7 +83,7 @@ export const command = {
             console.log("in db", pripominamStandup);
 
 
-            interaction.editReply({ content: "Dej si! " })
+            interaction.editReply({ content: `Bando- stand up tedy v ${dayjs(utcTimeOfStandup3).format('DD.MM.YYYY v HH:MM')}` });
         } catch (e) {
 
             console.log(e)
