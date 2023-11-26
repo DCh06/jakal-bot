@@ -1,7 +1,6 @@
-import { SlashCommandBuilder, CommandInteraction, User } from "discord.js";
+import { SlashCommandBuilder, CommandInteraction } from "discord.js";
 import prisma from "../../db";
 import { client } from "../../implementation/client";
-// import prisma from '../../lib/prisma' 
 
 export const command = {
     data: new SlashCommandBuilder()

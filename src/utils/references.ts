@@ -62,7 +62,9 @@ export const jakalikyRef = {
     "lean",
     "agil",
     "coach",
-    "waterfall"
+    "waterfall",
+    "transparentn",
+    "bezpe",
   ];
   
   

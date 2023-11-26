@@ -1,18 +1,14 @@
-import { SlashCommandBuilder, CommandInteraction, User } from "discord.js";
+import { SlashCommandBuilder, CommandInteraction } from "discord.js";
 import prisma from "../../db";
-import { client } from "../../implementation/client";
 import dayjs from 'dayjs'
 import * as utc from 'dayjs/plugin/utc'
 import * as timezone from 'dayjs/plugin/timezone'
 import { getDateSpanMilis } from "../../utils/random-generators";
-import { pripominumStandupJobGroCronuNehe } from "../../recurring-jobs/pripominam-standup-job";
 import { PripominamStandup } from "@prisma/client";
+import { pripominumStandupJobGroCronuNehe } from "../../helpers/standup/standup.helper";
 
 dayjs.extend(utc.default);
 dayjs.extend(timezone.default);
-
-
-// import prisma from '../../lib/prisma' 
 
 export const command = {
     data: new SlashCommandBuilder()
@@ -28,33 +24,14 @@ export const command = {
         ),
     async execute(interaction: CommandInteraction) {
         await interaction.deferReply();
-        console.log("casik", interaction.user.id)
-        // const date
         const regex = /(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})/
         if (!(regex).test(interaction.options.get('cas')?.value as unknown as string)) {
             console.error("[Error] V pici casy");
-            console.log(interaction.options.get('cas'));
             return;
         }
         const dateString = (interaction.options.get('cas')?.value) as unknown as string;
-        // todo clean
-        const dateOfStandup = new Date(dateString);
-        const utcTimeOfStandup = dayjs.utc(dateString).toDate();
-        // const utcTimeOfStandup = dayjs.utc(dateString).locale();
-        // const utcTimeOfStandup2 = dayjs(dateString).locale();
-        // const utcTimeOfStandup3 = dayjs(dateString).utc().locale();
-        // const utcTimeOfStandup2 = dayjs.tz(dateString, "Europe/Prague") // '2013-11-18T11:55:20-05:00'
-        const utcTimeOfStandup3 = dayjs.tz(dateString, "Europe/Prague").toDate() // '2013-11-18T11:55:20-05:00'
-        // const utcTimeOfStandup4 = dayjs.tz(dateString, "Europe/Prague").utc().toDate() // '2013-11-18T11:55:20-05:00'
+        const utcTimeOfStandup3 = dayjs.tz(dateString, "Europe/Prague").toDate()
 
-        // // Converting (from time zone 'Europe/Berlin'!)
-        // const utcTimeOfStandup5 =  dayjs(dateString).tz("Europe/Prague")
-        // const utcTimeOfStandup6 =  dayjs(dateString).tz("Europe/Prague").toDate()
-        // const utcTimeOfStandup7 =  dayjs(dateString).tz("Europe/Prague").utc().toDate()
-
-
-        // console.log(utcTimeOfStandup3, utcTimeOfStandup4,utcTimeOfStandup6,utcTimeOfStandup7);
-        
         const discordId = interaction.user.id;
         const description = interaction.options.get('popis') as unknown as string;
         const channelId = interaction.channelId;
@@ -65,7 +42,7 @@ export const command = {
 
             let hackyPickData: Pick<PripominamStandup, 'time' | 'channelId'> = { time: utcTimeOfStandup3, channelId };
             pripominumStandupJobGroCronuNehe([hackyPickData]);
-            console.log(dayjs(utcTimeOfStandup3).locale( "Europe/Prague").format('DD/MM/YYYY v HH:m'))
+            console.log(dayjs(utcTimeOfStandup3).locale("Europe/Prague").format('DD/MM/YYYY v HH:m'))
             interaction.editReply({ content: `Bando- stand up tedy ${dayjs.tz(utcTimeOfStandup3, "Europe/Prague").format('DD.MM.YYYY v HH:mm')}` });
             return;
         }
@@ -79,13 +56,12 @@ export const command = {
                     channelId,
                 }
             });
-            console.log("in db", pripominamStandup);
-
-
-            interaction.editReply({ content: `Bando- stand up tedy ${dayjs.tz(utcTimeOfStandup3, "Europe/Prague").format('DD.MM.YYYY v HH:mm')}` })        } catch (e) {
-
+            interaction.editReply({ content: `Bando- stand up tedy ${dayjs.tz(utcTimeOfStandup3, "Europe/Prague").format('DD.MM.YYYY v HH:mm')}` })
+        } catch (e) {
             console.log(e)
         }
+
+
         // todo create user if not exist
     },
 };
