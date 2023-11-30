@@ -294,7 +294,7 @@ export const naStojaka1Event = {
 
 export const naStojaka2Event = {
   key: 'NaStojaka2',
-  evaluateNextEventCondition: (message: Message) => message.author.id == '1096509170171248651',
+  evaluateNextEventCondition: (message: Message) => message.author.id == '539974505087369226',
   nextEvent: 'NaStojaka3',
   execute: (message: Message<boolean>) => {
     message.channel.send(`Hej, Radku?`)
@@ -304,7 +304,7 @@ export const naStojaka2Event = {
 
 export const naStojaka3Event = {
   key: 'NaStojaka3',
-  evaluateNextEventCondition: (message: Message) => message.author.id == '1096509170171248651',
+  evaluateNextEventCondition: (message: Message) => message.author.id == '539974505087369226',
   timeoutExecution: toJeDomluva,
   execute: (message: Message<boolean>) => {
     message.channel.send(`Na stojáka? 😉`)
