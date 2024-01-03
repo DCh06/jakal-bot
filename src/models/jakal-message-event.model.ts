@@ -11,6 +11,9 @@ export const StaticMessageEventNames = [
     "Ehrman",
     "Prajzska",
     "Bylo",
+    "DaSa1",
+    "ActionPoint",
+    "JakDlouho",
 ] as const
 
 export const RandomMessageEventNames = ["ThumbsUp",
@@ -29,6 +32,17 @@ export const RandomMessageEventNames = ["ThumbsUp",
     "JakSeJmenoval3",
     "JakSeJmenoval4",
     "JakSeJmenoval5",
+    "JakSeJmenoval6",
+    "JakSeJmenoval7",
+    "JakSeJmenoval8",
+    "JakSeJmenoval9",
+    "JakSeJmenoval10",
+    "JakSeJmenoval11",
+    "JakSeJmenoval12",
+    "JakSeJmenoval13",
+    "JakSeJmenoval14",
+    "DaSa2",
+    "Notas",
 ] as const
 
 export const MessageEventNames = [
@@ -66,6 +80,6 @@ export const isMessageEventWithTimeoutExecution = (messageEvent: IMessageEvent):
     return 'timeoutExecution' in messageEvent;
 }
 
-export const isMessageEventChainNextWithCondition = (messageEvent: IMessageEvent): messageEvent is IMessageEventWithNextConditionally | IMessageEventWithNext  => {
+export const isMessageEventChainNextWithCondition = (messageEvent: IMessageEvent): messageEvent is IMessageEventWithNextConditionally | IMessageEventWithNext => {
     return 'evaluateNextEventCondition' in messageEvent;
 }

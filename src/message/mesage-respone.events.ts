@@ -1,21 +1,19 @@
 import { Message } from "discord.js";
 import { generateRandomDateInBoundaries } from "../utils/random-generators";
 import { IMessageEvent, MessageEventName } from "../models/jakal-message-event.model";
-// TODO move to separate files?
-// const thumbsUp = (message: Message<boolean>) => {
-//   message.react("👍");
-// }
+
 export const thumbsUpEvent = {
   key: 'ThumbsUp',
   execute: (message: Message) => { message.react("👍") },
   timeoutMs: 0,
 } as IMessageEvent
 
-// const toPoznas = (message: Message<boolean>) => {
-//   message.channel.send(
-//     `Taky bych ${message.content}, ale to poznáš až budeš mít děti`
-//   );
-// }
+export const notasEvent = {
+  key: 'Notas',
+  execute: (message: Message) => { message.channel.send("Chlapi, neviděl někdo z vás můj notebook?") },
+  timeoutMs: 5000,
+} as IMessageEvent
+
 export const toPoznasEvent = {
   key: 'ToPoznas',
   execute: (message: Message<boolean>) => {
@@ -26,9 +24,6 @@ export const toPoznasEvent = {
   timeoutMs: 0,
 } as IMessageEvent
 
-// const distinct = (message: Message<boolean>) => {
-//   message.channel.send("Distinct vrací unikátní záznamy");
-// }
 export const distinctEvent = {
   key: 'Distinct',
   execute: (message: Message<boolean>) => {
@@ -37,9 +32,6 @@ export const distinctEvent = {
   timeoutMs: 0,
 } as IMessageEvent
 
-// const alriight = (message: Message<boolean>) => {
-//   setTimeout(() => message.channel.send(`Alriiiight, guuuys`), 60000);
-// }
 
 export const alriightEvent = {
   key: 'Alriight',
@@ -49,12 +41,6 @@ export const alriightEvent = {
   timeoutMs: 60000,
 } as IMessageEvent
 
-// const redflag = (message: Message<boolean>) => {
-//   message.channel.send(`Redflag! `);
-//   message.channel.send(
-//     `Podle mě se ${message.content} nehodi. Ale finalni volba je na vás bando. 😉`
-//   );
-// }
 export const redflagEvent = {
   key: 'Redflag',
   execute: (message: Message<boolean>) => {
@@ -95,12 +81,6 @@ export const naDovoleneEvent = {
   timeoutMs: 0,
 } as IMessageEvent
 
-// const judo = (message: Message<boolean>) => {
-//   setTimeout(
-//     () => message.channel.send(`Včera jsem byl s Matym na judu.😉`),
-//     30000
-//   );
-// }
 export const judoEvent = {
   key: 'Judo',
   execute: (message: Message<boolean>) => {
@@ -109,18 +89,6 @@ export const judoEvent = {
   timeoutMs: 30000,
 } as IMessageEvent
 
-
-// const urgo = (message: Message<boolean>) => {
-//   message.channel.send(
-//     `Okey a mam to nějak urgovat? Bando? Ještě nějak jak s tim mužu pomoct?`
-//   );
-// }
-// const staticJakalUrgo = (message: Message) => {
-//   if (message.content.indexOf("backlog") > -1) {
-//     urgo(message);
-//     return true;
-//   }
-// }
 
 const tichuckoCondition = (message: Message<boolean>) => {
   const messageContent = message.content.toLocaleLowerCase();
@@ -158,19 +126,17 @@ export const urgoEvent = {
   timeoutMs: 0,
 } as IMessageEvent
 
-// const ehrman = (message: Message<boolean>) => {
-//   setTimeout(
-//     () =>
-//       message.channel.send(`To u nas není, to už se neprodává, to mají jenom v Polsku. 😉`),
-//     30000
-//   );
-// }
-// const staticJakalEhrman = (message: Message) => {
-//   if (message.content.indexOf("hrman") > -1) {
-//     ehrman(message);
-//     return true;
-//   }
-// }
+export const jakDlouhoVydrziEvent = {
+  key: 'JakDlouho',
+  executeCondition: (message: Message) => message.content.indexOf("vydrz") > -1 || message.content.indexOf("vydrž") > -1,
+  execute: (message: Message<boolean>) => {
+    message.channel.send(
+      `No většinou do roka- víc tady člověk na projektu nevydrží.`
+    );
+  },
+  timeoutMs: 0,
+} as IMessageEvent
+
 export const ehrmanEvent = {
   key: 'Ehrman',
   executeCondition: (message: Message) => message.content.indexOf("hrman") > -1,
@@ -180,20 +146,6 @@ export const ehrmanEvent = {
   timeoutMs: 30000,
 } as IMessageEvent
 
-
-// const prajzka = (message: Message<boolean>) => {
-//   setTimeout(
-//     () =>
-//       message.channel.send(`Hlučín není prajzská. To vím jsem tam bydlel. 😉`),
-//     30000
-//   );
-// }
-// const staticJakalPrajzka = (message: Message) => {
-//   if (message.content.indexOf("praj") > -1) {
-//     prajzka(message);
-//     return true;
-//   }
-// }
 export const prajzkaEvent = {
   key: 'Prajzska',
   executeCondition: (message: Message) => message.content.indexOf("praj") > -1,
@@ -203,26 +155,46 @@ export const prajzkaEvent = {
   timeoutMs: 30000,
 } as IMessageEvent
 
-
-// const bylo = (message: Message<boolean>) => {
-//   setTimeout(() => message.channel.send(`Za mě to tak nebylo. 😉`), 30000);
-// }
-// const staticJakalBylo = (message: Message) => {
-//   const rnd = Math.random();
-//   if (message.content.indexOf("bylo") > -1 && rnd > 0.7) {
-//     bylo(message);
-//     return true;
-//   }
-// }
 export const byloEvent = {
   key: 'Bylo',
   executeCondition: (message: Message) => {
-    return message.content.indexOf("bylo") > -1 && Math.random() > 0.7
+    return message.content.indexOf("bylo") > -1 && Math.random() > 0.5
   },
   execute: (message: Message<boolean>) => {
     message.channel.send(`Za mě to tak nebylo. 😉`)
   },
   timeoutMs: 30000,
+} as IMessageEvent
+
+export const actionPointEvent = {
+  key: 'ActionPoint',
+  executeCondition: (message: Message) => {
+    return message.content.indexOf("?") > -1 && Math.random() > 0.3
+  },
+  execute: (message: Message<boolean>) => {
+    message.channel.send(`Bando- vidím, že kolem toho je ještě spoustu otázek. Udělám tedy z "${message}" action point. 😉`)
+  },
+  timeoutMs: 30000,
+} as IMessageEvent
+
+export const daSa1Event = {
+  key: 'DaSa1',
+  executeCondition: (message: Message) => {
+    return (message.content.toLocaleLowerCase().indexOf("da") > -1 || message.content.toLocaleLowerCase().indexOf("dá") > -1) && Math.random() > 0
+  },
+  nextEvent: 'DaSa2',
+  execute: (message: Message<boolean>) => {
+    message.channel.send(`Dá sa, nedá sa, dá sa Pražákom.`)
+  },
+  timeoutMs: 10000,
+} as IMessageEvent
+
+export const daSa2Event = {
+  key: 'DaSa2',
+  execute: (message: Message<boolean>) => {
+    message.channel.send(`Bára se nesměje.`)
+  },
+  timeoutMs: 10000,
 } as IMessageEvent
 
 const toJeDomluva = (message: Message) => { message.channel.send(`To je domluva...`) };
@@ -233,7 +205,7 @@ export const jakSeJmenoval1Event = {
   execute: (message: Message<boolean>) => {
     message.channel.send(`Jak se jmenoval ten manažer, kterého jsi potkal?`)
   },
-  timeoutMs: 10000,
+  timeoutMs: 20000,
   isEvaluatedIndividually: true,
 } as IMessageEvent
 
@@ -244,7 +216,7 @@ export const jakSeJmenoval2Event = {
   execute: (message: Message<boolean>) => {
     message.channel.send(`Karel?`)
   },
-  timeoutMs: 10000,
+  timeoutMs: 20000,
   isEvaluatedIndividually: true,
 } as IMessageEvent
 
@@ -256,7 +228,7 @@ export const jakSeJmenoval3Event = {
   execute: (message: Message<boolean>) => {
     message.channel.send(`Petr?`)
   },
-  timeoutMs: 10000,
+  timeoutMs: 20000,
   isEvaluatedIndividually: true,
 } as IMessageEvent
 
@@ -268,18 +240,126 @@ export const jakSeJmenoval4Event = {
   execute: (message: Message<boolean>) => {
     message.channel.send(`Pavel?`)
   },
-  timeoutMs: 10000,
+  timeoutMs: 20000,
   isEvaluatedIndividually: true,
 } as IMessageEvent
 
 export const jakSeJmenoval5Event = {
   key: 'JakSeJmenoval5',
+  nextEvent: 'JakSeJmenoval6',
   evaluateNextEventCondition: (message: Message) => !!message,
   timeoutExecution: (message: Message) => {},
   execute: (message: Message<boolean>) => {
     message.channel.send(`Filip?`)
   },
   timeoutMs: 10000,
+  isEvaluatedIndividually: true,
+} as IMessageEvent
+
+export const jakSeJmenoval6Event = {
+  key: 'JakSeJmenoval6',
+  nextEvent: 'JakSeJmenoval7',
+  evaluateNextEventCondition: (message: Message) => !!message,
+  timeoutExecution: (message: Message) => {},
+  execute: (message: Message<boolean>) => {
+    message.channel.send(`Luboš?`)
+  },
+  timeoutMs: 20000,
+  isEvaluatedIndividually: true,
+} as IMessageEvent
+
+export const jakSeJmenoval7Event = {
+  key: 'JakSeJmenoval7',
+  nextEvent: 'JakSeJmenoval8',
+  evaluateNextEventCondition: (message: Message) => !!message,
+  timeoutExecution: (message: Message) => {},
+  execute: (message: Message<boolean>) => {
+    message.channel.send(`Jára?`)
+  },
+  timeoutMs: 20000,
+  isEvaluatedIndividually: true,
+} as IMessageEvent
+
+export const jakSeJmenoval8Event = {
+  key: 'JakSeJmenoval8',
+  nextEvent: 'JakSeJmenoval9',
+  evaluateNextEventCondition: (message: Message) => !!message,
+  timeoutExecution: (message: Message) => {},
+  execute: (message: Message<boolean>) => {
+    message.channel.send(`David?`)
+  },
+  timeoutMs: 20000,
+  isEvaluatedIndividually: true,
+} as IMessageEvent
+
+export const jakSeJmenoval9Event = {
+  key: 'JakSeJmenoval9',
+  nextEvent: 'JakSeJmenoval10',
+  evaluateNextEventCondition: (message: Message) => !!message,
+  timeoutExecution: (message: Message) => {},
+  execute: (message: Message<boolean>) => {
+    message.channel.send(`Michal?`)
+  },
+  timeoutMs: 20000,
+  isEvaluatedIndividually: true,
+} as IMessageEvent
+
+export const jakSeJmenoval10Event = {
+  key: 'JakSeJmenoval10',
+  nextEvent: 'JakSeJmenoval11',
+  evaluateNextEventCondition: (message: Message) => !!message,
+  timeoutExecution: (message: Message) => {},
+  execute: (message: Message<boolean>) => {
+    message.channel.send(`Tarek?`)
+  },
+  timeoutMs: 20000,
+  isEvaluatedIndividually: true,
+} as IMessageEvent
+
+export const jakSeJmenoval11Event = {
+  key: 'JakSeJmenoval11',
+  nextEvent: 'JakSeJmenoval12',
+  evaluateNextEventCondition: (message: Message) => !!message,
+  timeoutExecution: (message: Message) => {},
+  execute: (message: Message<boolean>) => {
+    message.channel.send(`Jindřich?`)
+  },
+  timeoutMs: 20000,
+  isEvaluatedIndividually: true,
+} as IMessageEvent
+
+export const jakSeJmenoval12Event = {
+  key: 'JakSeJmenoval12',
+  nextEvent: 'JakSeJmenoval3',
+  evaluateNextEventCondition: (message: Message) => !!message,
+  timeoutExecution: (message: Message) => {},
+  execute: (message: Message<boolean>) => {
+    message.channel.send(`Mečislav?`)
+  },
+  timeoutMs: 20000,
+  isEvaluatedIndividually: true,
+} as IMessageEvent
+
+export const jakSeJmenoval13Event = {
+  key: 'JakSeJmenoval13',
+  nextEvent: 'JakSeJmenoval14',
+  evaluateNextEventCondition: (message: Message) => !!message,
+  timeoutExecution: (message: Message) => {},
+  execute: (message: Message<boolean>) => {
+    message.channel.send(`Ctirad?`)
+  },
+  timeoutMs: 20000,
+  isEvaluatedIndividually: true,
+} as IMessageEvent
+
+export const jakSeJmenoval14Event = {
+  key: 'JakSeJmenoval14',
+  evaluateNextEventCondition: (message: Message) => !!message,
+  timeoutExecution: (message: Message) => {},
+  execute: (message: Message<boolean>) => {
+    message.channel.send(`Kazimír?`)
+  },
+  timeoutMs: 20000,
   isEvaluatedIndividually: true,
 } as IMessageEvent
 
@@ -311,63 +391,3 @@ export const naStojaka3Event = {
   },
   timeoutMs: 20000,
 } as IMessageEvent
-
-// const naStojaka1 = (message: Message<boolean>) => {
-//   setTimeout(() => message.channel.send(`Radku?`), 30000);
-// }
-// const naStojaka2 = (message: Message<boolean>) => {
-//   setTimeout(() => message.channel.send(`Hej, Radku?`), 60000);
-// }
-// const naStojaka3 = (message: Message<boolean>) => {
-//   setTimeout(() => message.channel.send(`Na stojáka?😉`), 90000);
-// }
-
-// export const staticConditionalRespones: ((message: Message) => boolean | undefined)[] = [
-//   staticJakalUrgo,
-//   staticJakalEhrman,
-//   staticJakalPrajzka,
-//   staticJakalBylo,
-// ]
-
-// export const probabilityFairResponses = [
-//   thumbsUp,
-//   thumbsUp,
-//   thumbsUp,
-//   thumbsUp,
-//   thumbsUp,
-//   thumbsUp,
-//   thumbsUp,
-//   thumbsUp,
-//   thumbsUp,
-//   thumbsUp,
-//   thumbsUp,
-//   thumbsUp,
-//   thumbsUp,
-//   thumbsUp,
-//   thumbsUp,
-//   thumbsUp,
-//   thumbsUp,
-//   thumbsUp,
-//   thumbsUp,
-//   thumbsUp,
-//   thumbsUp,
-//   thumbsUp,
-//   thumbsUp,
-//   thumbsUp,
-//   thumbsUp,
-//   toPoznas,
-//   toPoznas,
-//   toPoznas,
-//   distinct,
-//   distinct,
-//   distinct,
-//   alriight,
-//   alriight,
-//   redflag,
-//   redflag,
-//   redflag,
-//   naStojaka,
-//   judo,
-//   naDovolene,
-//   naDovolene,
-// ];

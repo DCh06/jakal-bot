@@ -20,7 +20,6 @@ function randomizePripomenuti(standupPripomenuti: Pick<PripominamStandup, 'time'
     const casyPripomenuti: Date[] = [];
 
     for (let i = 0; i < pocetPripomenuti; i++) {
-        // const nextLowerBoundCasPripomenuti = casyPripomenuti[i - 1] || new Date()
         casyPripomenuti.push(generateRandomDateInBoundaries(new Date(), standupPripomenuti.time))
     }
 

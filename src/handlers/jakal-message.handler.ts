@@ -80,6 +80,9 @@ export class JakalMessageHandler {
         let eventName = StaticMessageEventNames.find(staticEventName => {
             return (<IMessageEventWithCondition>messageResponseMap.get(staticEventName))?.executeCondition(message);
         });
+
+        // TODO add dynamically
+        // do not forget to add new event here
         return messageResponseMap.get(eventName);
     }
 

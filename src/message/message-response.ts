@@ -1,5 +1,21 @@
 import { IMessageEvent, MessageEventName, RandomMessageEventNames } from "../models/jakal-message-event.model";
-import { alriightEvent, byloEvent, distinctEvent, ehrmanEvent, jakSeJmenoval1Event, jakSeJmenoval2Event, jakSeJmenoval3Event, jakSeJmenoval4Event, jakSeJmenoval5Event, judoEvent, naDovoleneEvent, naStojaka1Event, naStojaka2Event, naStojaka3Event, nahlasuckoEvent, prajzkaEvent, redflagEvent, thumbsUpEvent, tichuckoEvent, toPoznasEvent, urgoEvent } from "./mesage-respone.events";
+import {
+    actionPointEvent,
+    alriightEvent,
+    byloEvent, daSa1Event, daSa2Event,
+     distinctEvent, ehrmanEvent,  jakDlouhoVydrziEvent, 
+     jakSeJmenoval10Event, jakSeJmenoval11Event, 
+     jakSeJmenoval12Event, jakSeJmenoval13Event,
+      jakSeJmenoval14Event, jakSeJmenoval1Event, 
+      jakSeJmenoval2Event, jakSeJmenoval3Event,
+       jakSeJmenoval4Event, jakSeJmenoval5Event, 
+       jakSeJmenoval6Event, jakSeJmenoval7Event,
+        jakSeJmenoval8Event, jakSeJmenoval9Event, 
+        judoEvent, naDovoleneEvent, naStojaka1Event,
+         naStojaka2Event, naStojaka3Event, nahlasuckoEvent,
+          notasEvent, prajzkaEvent, redflagEvent, thumbsUpEvent,
+           tichuckoEvent, toPoznasEvent, urgoEvent
+} from "./mesage-respone.events";
 
 export const probabilityFairRandomResponse: RandomMessageEventNames[] = [
     "ThumbsUp",
@@ -64,4 +80,18 @@ export const messageResponseMap = new Map<MessageEventName | undefined, IMessage
     [jakSeJmenoval3Event.key, jakSeJmenoval3Event],
     [jakSeJmenoval4Event.key, jakSeJmenoval4Event],
     [jakSeJmenoval5Event.key, jakSeJmenoval5Event],
+    [jakSeJmenoval6Event.key, jakSeJmenoval6Event],
+    [jakSeJmenoval7Event.key, jakSeJmenoval7Event],
+    [jakSeJmenoval8Event.key, jakSeJmenoval8Event],
+    [jakSeJmenoval9Event.key, jakSeJmenoval9Event],
+    [jakSeJmenoval10Event.key, jakSeJmenoval10Event],
+    [jakSeJmenoval11Event.key, jakSeJmenoval11Event],
+    [jakSeJmenoval12Event.key, jakSeJmenoval12Event],
+    [jakSeJmenoval13Event.key, jakSeJmenoval13Event],
+    [jakSeJmenoval14Event.key, jakSeJmenoval14Event],
+    [daSa1Event.key, daSa1Event],
+    [daSa2Event.key, daSa2Event],
+    [actionPointEvent.key, actionPointEvent],
+    [notasEvent.key, notasEvent],
+    [jakDlouhoVydrziEvent.key, jakDlouhoVydrziEvent]
 ]);
