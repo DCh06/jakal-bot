@@ -222,9 +222,6 @@ export const jakSeJmenoval2Event = {
   key: 'JakSeJmenoval2',
   evaluateNextEventCondition: (message: Message) => !!message,
   nextEvent: 'JakSeJmenoval3',
-  timeoutExecution: (message: Message) => {
-    message.channel.send(`Takže Karel.`)
-  },
   execute: (message: Message<boolean>) => {
     message.channel.send(`Karel?`)
   },
@@ -237,7 +234,7 @@ export const jakSeJmenoval3Event = {
   nextEvent: 'JakSeJmenoval4',
   evaluateNextEventCondition: (message: Message) => !!message,
   timeoutExecution: (message: Message) => {
-    message.channel.send(`Takže Petr.`)
+    message.channel.send(`Takže Karel.`)
   },
   execute: (message: Message<boolean>) => {
     message.channel.send(`Petr?`)
@@ -250,7 +247,9 @@ export const jakSeJmenoval4Event = {
   key: 'JakSeJmenoval4',
   nextEvent: 'JakSeJmenoval5',
   evaluateNextEventCondition: (message: Message) => !!message,
-  timeoutExecution: (message: Message) => {},
+  timeoutExecution: (message: Message) => {
+    message.channel.send(`Takže Petr.`)
+  },
   execute: (message: Message<boolean>) => {
     message.channel.send(`Pavel?`)
   },
@@ -262,7 +261,9 @@ export const jakSeJmenoval5Event = {
   key: 'JakSeJmenoval5',
   nextEvent: 'JakSeJmenoval6',
   evaluateNextEventCondition: (message: Message) => !!message,
-  timeoutExecution: (message: Message) => {},
+  timeoutExecution: (message: Message) => {
+    message.channel.send(`Takže Pavel.`)
+  },
   execute: (message: Message<boolean>) => {
     message.channel.send(`Filip?`)
   },
@@ -274,7 +275,9 @@ export const jakSeJmenoval6Event = {
   key: 'JakSeJmenoval6',
   nextEvent: 'JakSeJmenoval7',
   evaluateNextEventCondition: (message: Message) => !!message,
-  timeoutExecution: (message: Message) => {},
+  timeoutExecution: (message: Message) => {
+    message.channel.send(`Takže Filip.`)
+  },
   execute: (message: Message<boolean>) => {
     message.channel.send(`Luboš?`)
   },
@@ -286,7 +289,9 @@ export const jakSeJmenoval7Event = {
   key: 'JakSeJmenoval7',
   nextEvent: 'JakSeJmenoval8',
   evaluateNextEventCondition: (message: Message) => !!message,
-  timeoutExecution: (message: Message) => {},
+  timeoutExecution: (message: Message) => {
+    message.channel.send(`Takže Lubo.`)
+  },
   execute: (message: Message<boolean>) => {
     message.channel.send(`Jára?`)
   },
