@@ -16,8 +16,12 @@ export const command = {
         .setDescription("Pripomenuti standupu v urcitou hodinu")
         .addStringOption(option =>
             option.setName("cas")
-                .setDescription("Cas YYYY-MM-DDTHH:MM (priklad 2023-11-18T11:45)")
+                .setDescription("Cas HH:MM v 24 hod formatu (jedna se o Prague Time takze ze zahranici to bude blbnou neheheh)")
                 .setRequired(true))
+        .addStringOption(option =>
+            option.setName("datum")
+                .setDescription("Cas DD-MM-YYYY (priklad 11-09-2007)")
+        )
         .addStringOption(option =>
             option.setName("popis")
                 .setDescription("Popis syncu")
@@ -25,16 +29,30 @@ export const command = {
     async execute(interaction: CommandInteraction) {
         await interaction.deferReply();
         const regex = /(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})/
-        if (!(regex).test(interaction.options.get('cas')?.value as unknown as string)) {
+
+        let popis = <string>(interaction.options.get('popis')?.value)
+        let cas = <string>(interaction.options.get('cas')?.value)
+        let datum = <string>(interaction.options.get('datum')?.value);
+        let dummyDate = dayjs(new Date()).tz("Europe/Prague");
+
+        datum ||= `${dummyDate.date()}-${dummyDate.month() + 1}-${dummyDate.year()}`;
+        let [day, month, year] = datum.split("-").map(num => num.padStart(2, '0'))
+        let createdDate = `${year}-${month}-${day}T${cas}`;
+
+        console.log(createdDate);
+
+        if (!(regex).test(createdDate)) {
             console.error("[Error] V pici casy");
+            interaction.editReply("Chlapi tady se něco nepovedlo, udělam na to excel sheet, nekde je chyba v datumu");
             return;
         }
-        const dateString = (interaction.options.get('cas')?.value) as unknown as string;
-        const utcTimeOfStandup3 = dayjs.tz(dateString, "Europe/Prague").toDate()
+
+        const utcTimeOfStandup3 = dayjs.tz(createdDate, "Europe/Prague").toDate()
 
         const discordId = interaction.user.id;
         const description = interaction.options.get('popis') as unknown as string;
         const channelId = interaction.channelId;
+        const standupText = `Bando- stand up tedy ${dayjs.tz(utcTimeOfStandup3, "Europe/Prague").format('DD.MM.YYYY v HH:mm')}. ${popis ? 'Nezapomeňte se připravit, téma bude: ' + popis : ''}`
 
         // if less than 30 dont save to db
         console.log(new Date(), utcTimeOfStandup3)
@@ -43,7 +61,7 @@ export const command = {
             let hackyPickData: Pick<PripominamStandup, 'time' | 'channelId'> = { time: utcTimeOfStandup3, channelId };
             pripominumStandupJobGroCronuNehe([hackyPickData]);
             console.log(dayjs(utcTimeOfStandup3).locale("Europe/Prague").format('DD/MM/YYYY v HH:m'))
-            interaction.editReply({ content: `Bando- stand up tedy ${dayjs.tz(utcTimeOfStandup3, "Europe/Prague").format('DD.MM.YYYY v HH:mm')}` });
+            interaction.editReply({ content: standupText });
             return;
         }
 
@@ -56,12 +74,13 @@ export const command = {
                     channelId,
                 }
             });
-            interaction.editReply({ content: `Bando- stand up tedy ${dayjs.tz(utcTimeOfStandup3, "Europe/Prague").format('DD.MM.YYYY v HH:mm')}` })
+            interaction
+                .editReply(
+                    {
+                        content: standupText
+                    })
         } catch (e) {
-            console.log(e)
+            interaction.editReply("Chlapi tady se něco nepovedlo, udělam na to excel sheet, asi tam chybi setTimeout()");
         }
-
-
-        // todo create user if not exist
     },
 };

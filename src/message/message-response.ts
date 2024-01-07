@@ -2,7 +2,7 @@ import { IMessageEvent, MessageEventName, RandomMessageEventNames } from "../mod
 import {
     actionPointEvent,
     alriightEvent,
-    byloEvent, daSa1Event, daSa2Event,
+    byloEvent, coNovehoJakyEvent, daSa1Event, daSa2Event,
      distinctEvent, ehrmanEvent,  jakDlouhoVydrziEvent, 
      jakSeJmenoval10Event, jakSeJmenoval11Event, 
      jakSeJmenoval12Event, jakSeJmenoval13Event,
@@ -13,7 +13,7 @@ import {
         jakSeJmenoval8Event, jakSeJmenoval9Event, 
         judoEvent, naDovoleneEvent, naStojaka1Event,
          naStojaka2Event, naStojaka3Event, nahlasuckoEvent,
-          notasEvent, prajzkaEvent, redflagEvent, thumbsUpEvent,
+          notasEvent, prajzkaEvent, redflagEvent, skvelaPraceEvent, thumbsUpEvent,
            tichuckoEvent, toPoznasEvent, urgoEvent
 } from "./mesage-respone.events";
 
@@ -33,6 +33,13 @@ export const probabilityFairRandomResponse: RandomMessageEventNames[] = [
     "ThumbsUp",
     "ThumbsUp",
     "ThumbsUp",
+    "ThumbsUp",
+    "ThumbsUp",
+    "ThumbsUp",
+    "ThumbsUp",
+    "ThumbsUp",
+    "ThumbsUp",
+    "ThumbsUp",
     "ToPoznas",
     "ToPoznas",
     "ToPoznas",
@@ -41,7 +48,8 @@ export const probabilityFairRandomResponse: RandomMessageEventNames[] = [
     "Distinct",
     "Alriight",
     "Alriight",
-    "Redflag",
+    "Notas",
+    "SkvelaPrace",
     "Redflag",
     "Redflag",
     "Redflag",
@@ -52,7 +60,6 @@ export const probabilityFairRandomResponse: RandomMessageEventNames[] = [
     "NaStojaka1",
     "NaStojaka1",
     "NaStojaka1",
-    "JakSeJmenoval1",
     "JakSeJmenoval1",
     "JakSeJmenoval1",
     "JakSeJmenoval1",
@@ -93,5 +100,7 @@ export const messageResponseMap = new Map<MessageEventName | undefined, IMessage
     [daSa2Event.key, daSa2Event],
     [actionPointEvent.key, actionPointEvent],
     [notasEvent.key, notasEvent],
-    [jakDlouhoVydrziEvent.key, jakDlouhoVydrziEvent]
+    [skvelaPraceEvent.key, skvelaPraceEvent],
+    [jakDlouhoVydrziEvent.key, jakDlouhoVydrziEvent],
+    [coNovehoJakyEvent.key, coNovehoJakyEvent],
 ]);

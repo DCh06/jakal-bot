@@ -1,4 +1,4 @@
-import { Collection, Events } from "discord.js";
+import { Collection, Events, REST, Routes } from "discord.js";
 
 import { client } from "./client";
 
@@ -11,6 +11,11 @@ export const run = () => {
     const jakalMessageHandler = new JakalMessageHandler(0.07);
 
     loadCommands();
+    // const rest = new REST().setToken(process.env.TOKEN!);
+    // rest.put(Routes.applicationCommands('1114177337228021762'), { body: [] })
+	// .then(() => console.log('Successfully deleted all application commands.'))
+	// .catch(console.error);
+
     client.on(Events.ClientReady, (c) =>
         console.log(`Connected to Discord! Logged In as ${c.user.tag}`)
     );
@@ -22,4 +27,5 @@ export const run = () => {
     handlePresenceUpdate();
     handleInteraction();
     client.login(process.env.TOKEN!);
+  
 }

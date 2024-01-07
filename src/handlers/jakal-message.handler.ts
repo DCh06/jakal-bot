@@ -2,13 +2,13 @@ import { Message, messageLink } from "discord.js";
 import { client } from "../implementation/client";
 import { addJakaliky } from "../queries/add-jakaliky.query";
 import { jakalikyRef, agilniSlova } from "../utils/references";
-import { IMessageEvent, IMessageEventWithCondition, IMessageEventWithNext, MessageEventName, RandomMessageEventNames, SpecialMessageEventNames, StaticMessageEventNames, isMessageEventChainNextWithCondition, isMessageEventWithTimeoutExecution } from "../models/jakal-message-event.model";
+import { IEventNameCooldown, IMessageEvent, IMessageEventWithCondition, IMessageEventWithNext, MessageEventName, RandomMessageEventNames, SpecialMessageEventNames, StaticMessageEventNames, isMessageEventChainNextWithCondition, isMessageEventWithTimeoutExecution } from "../models/jakal-message-event.model";
 import { messageResponseMap, probabilityFairRandomResponse } from "../message/message-response";
-import { eventNames } from "process";
 
 export class JakalMessageHandler {
     private msgEvent?: IMessageEvent
     private msgEventNextConditionSucceed = false;
+    private eventsOnCooldown: IEventNameCooldown[] = [];
 
     constructor(private responseChance: number) {
         this.responseChance = 0.07;
@@ -16,7 +16,8 @@ export class JakalMessageHandler {
 
     handleMessage(message: Message<boolean>): void {
         if (message.author.bot) { return; }
-        
+        this.refreshCooldowns();
+
         // special events dont care about current event
         const specialMsgEvent = this.getSpecialMessageEventWithCondition(message);
         this.handleEvent(message, specialMsgEvent);
@@ -30,8 +31,11 @@ export class JakalMessageHandler {
             return;
         }
 
-        this.msgEvent = this.getNewEvent(message);
+        this.msgEvent = this.getNewEvent(message, this.eventsOnCooldown.map(eventOnCd => eventOnCd.eventName));
         this.handleEvent(message, this.msgEvent);
+        this.handleSideEffects(message, this.msgEvent?.key);
+
+        this.handleAddEventOnCooldown(this.msgEvent);
 
         // // let respondedReturn = this.handleResponseChanceChange(message, this.responseChance);
         // // if (respondedReturn) { return; }
@@ -68,29 +72,33 @@ export class JakalMessageHandler {
         return messageResponseMap.get(eventName);
     }
 
-    getNewEvent(mesage: Message): IMessageEvent | undefined {
-        let event = this.getMessageEventWithCondition(mesage);
-        event ||= this.getRandomMessageEvent(mesage);
+    getNewEvent(mesage: Message, eventsOnCooldownNames: MessageEventName[]): IMessageEvent | undefined {
+        let event = this.getMessageEventWithCondition(mesage, eventsOnCooldownNames);
+        event ||= this.getRandomMessageEvent(mesage, eventsOnCooldownNames);
         // console.log(event);
-        
+
+
         return event;
     }
 
-    getMessageEventWithCondition(message: Message<boolean>): IMessageEvent | undefined {
-        let eventName = StaticMessageEventNames.find(staticEventName => {
-            return (<IMessageEventWithCondition>messageResponseMap.get(staticEventName))?.executeCondition(message);
-        });
+    getMessageEventWithCondition(message: Message<boolean>, eventsOnCooldownNames: MessageEventName[]): IMessageEvent | undefined {
+        let eventName = StaticMessageEventNames
+            .filter(staticEventName => !eventsOnCooldownNames.includes(staticEventName))
+            .find(staticEventName => {
+                return (<IMessageEventWithCondition>messageResponseMap.get(staticEventName))?.executeCondition(message);
+            });
 
         // TODO add dynamically
         // do not forget to add new event here
         return messageResponseMap.get(eventName);
     }
 
-    getRandomMessageEvent(message: Message<boolean>): IMessageEvent | undefined {
+    getRandomMessageEvent(message: Message<boolean>, eventsOnCooldownNames: MessageEventName[]): IMessageEvent | undefined {
         let eventName;
         if (Math.random() < this.responseChance) {
             const randomRes = Math.random();
-            eventName = probabilityFairRandomResponse[Math.floor(probabilityFairRandomResponse.length * randomRes)];
+            eventName = probabilityFairRandomResponse
+                .filter(eventName => !eventsOnCooldownNames.includes(eventName))[Math.floor(probabilityFairRandomResponse.length * randomRes)];
         }
 
         return messageResponseMap.get(eventName);
@@ -100,8 +108,7 @@ export class JakalMessageHandler {
         if (!msgEvent) {
             return;
         }
-        this.handleSideEffects(message, msgEvent.key);
-        
+
         await new Promise((res) => setTimeout(res, this.msgEvent?.timeoutMs));
         if (isMessageEventWithTimeoutExecution(msgEvent) && !this.msgEventNextConditionSucceed) {
             msgEvent?.timeoutExecution(message);
@@ -122,8 +129,9 @@ export class JakalMessageHandler {
         this.handleEvent(message, this.msgEvent);
     }
 
-    handleSideEffects(message: Message, eventName: MessageEventName) {
+    handleSideEffects(message: Message, eventName?: MessageEventName) {
         console.log(eventName)
+        if (!eventName) { return; }
         if (eventName === 'Tichucko') { this.decreaseChance(); }
         if (eventName === 'Nahlasucko') { this.increaseChance(); }
         this.agilniSlovaCheck(message);
@@ -176,28 +184,14 @@ export class JakalMessageHandler {
         return agilniSlova.some((text) => message.content.includes(text))
     }
 
-    // private staticResponsesCheck(message: Message<boolean>): boolean {
-    //     let respondedReturn;
-    //     staticConditionalRespones
-    //         .forEach((staticConditionalRespone) => {
-    //             respondedReturn = staticConditionalRespone(message);
-    //             if (respondedReturn) {
-    //                 addJakaliky(message.author, jakalikyRef["static agile"], "Agilní check!");
-    //                 return;
-    //             }
-    //         });
+    private handleAddEventOnCooldown(event?: IMessageEvent) {
+        if (!event) { return; }
+        if (!event.hasCooldown) { return; }
+        this.eventsOnCooldown.push({ eventName: event.key, cooldownStart: new Date() })
+    }
 
-    //     return !!respondedReturn;
-    // }
-
-    // private jakalRespondRandom(rnd: number, message: Message<boolean>) {
-    //     if (rnd < this.responseChance) {
-    //         const randomRes = Math.random();
-    //         addJakaliky(message.author, jakalikyRef["probability"], "Agilní check!");
-    //         console.log(randomRes, Math.floor(probabilityFairResponses.length * randomRes));
-
-    //         let rndResponse = probabilityFairResponses[Math.floor(probabilityFairResponses.length * randomRes)];
-    //         rndResponse(message);
-    //     }
-    // }
+    private refreshCooldowns() {
+        let cooldown = 60 * 60 * 1000 * 0.5;
+        this.eventsOnCooldown = this.eventsOnCooldown.filter(eventOnCd => new Date().getTime() - eventOnCd.cooldownStart.getTime() < cooldown)
+    }
 }

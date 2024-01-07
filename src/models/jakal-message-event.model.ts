@@ -14,6 +14,7 @@ export const StaticMessageEventNames = [
     "DaSa1",
     "ActionPoint",
     "JakDlouho",
+    "CoNovehoJaky",
 ] as const
 
 export const RandomMessageEventNames = ["ThumbsUp",
@@ -43,6 +44,7 @@ export const RandomMessageEventNames = ["ThumbsUp",
     "JakSeJmenoval14",
     "DaSa2",
     "Notas",
+    "SkvelaPrace",
 ] as const
 
 export const MessageEventNames = [
@@ -59,6 +61,7 @@ export interface IMessageEventBase {
     key: MessageEventName,
     execute: (message: Message) => void,
     timeoutMs: number,
+    hasCooldown?: boolean,
 }
 
 export interface IMessageEventWithCondition extends IMessageEventBase {
@@ -82,4 +85,9 @@ export const isMessageEventWithTimeoutExecution = (messageEvent: IMessageEvent):
 
 export const isMessageEventChainNextWithCondition = (messageEvent: IMessageEvent): messageEvent is IMessageEventWithNextConditionally | IMessageEventWithNext => {
     return 'evaluateNextEventCondition' in messageEvent;
+}
+
+export interface IEventNameCooldown { 
+    eventName: MessageEventName,
+    cooldownStart: Date,
 }

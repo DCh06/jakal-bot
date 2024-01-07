@@ -12,6 +12,7 @@ export const notasEvent = {
   key: 'Notas',
   execute: (message: Message) => { message.channel.send("Chlapi, neviděl někdo z vás můj notebook?") },
   timeoutMs: 5000,
+  hasCooldown: true,
 } as IMessageEvent
 
 export const toPoznasEvent = {
@@ -22,6 +23,7 @@ export const toPoznasEvent = {
     );
   },
   timeoutMs: 0,
+  hasCooldown: true,
 } as IMessageEvent
 
 export const distinctEvent = {
@@ -55,9 +57,10 @@ export const redflagEvent = {
 export const skvelaPraceEvent = {
   key: 'SkvelaPrace',
   execute: (message: Message<boolean>) => {
-    message.channel.send(`Skvělá práce borci dneska!`);
+    message.channel.send(`Skvělá práce dneska borci!`);
   },
   timeoutMs: 10000,
+  hasCooldown: true,
 } as IMessageEvent
 
 
@@ -87,6 +90,7 @@ export const judoEvent = {
     message.channel.send(`Včera jsem byl s Matym na judu.😉`)
   },
   timeoutMs: 30000,
+  hasCooldown: true,
 } as IMessageEvent
 
 
@@ -135,6 +139,7 @@ export const jakDlouhoVydrziEvent = {
     );
   },
   timeoutMs: 0,
+  hasCooldown: true,
 } as IMessageEvent
 
 export const ehrmanEvent = {
@@ -164,29 +169,32 @@ export const byloEvent = {
     message.channel.send(`Za mě to tak nebylo. 😉`)
   },
   timeoutMs: 30000,
+  hasCooldown: true,
 } as IMessageEvent
 
 export const actionPointEvent = {
   key: 'ActionPoint',
   executeCondition: (message: Message) => {
-    return message.content.indexOf("?") > -1 && Math.random() > 0.3
+    return message.content.indexOf("?") > -1 && Math.random() > 0.7
   },
   execute: (message: Message<boolean>) => {
     message.channel.send(`Bando- vidím, že kolem toho je ještě spoustu otázek. Udělám tedy z "${message}" action point. 😉`)
   },
   timeoutMs: 30000,
+  hasCooldown: true,
 } as IMessageEvent
 
 export const daSa1Event = {
   key: 'DaSa1',
   executeCondition: (message: Message) => {
-    return (message.content.toLocaleLowerCase().indexOf("da") > -1 || message.content.toLocaleLowerCase().indexOf("dá") > -1) && Math.random() > 0
+    return (message.content.toLocaleLowerCase().indexOf("da") > -1 || message.content.toLocaleLowerCase().indexOf("dá") > -1) && Math.random() > 0.7
   },
   nextEvent: 'DaSa2',
   execute: (message: Message<boolean>) => {
     message.channel.send(`Dá sa, nedá sa, dá sa Pražákom.`)
   },
   timeoutMs: 10000,
+  hasCooldown: true,
 } as IMessageEvent
 
 export const daSa2Event = {
@@ -207,12 +215,16 @@ export const jakSeJmenoval1Event = {
   },
   timeoutMs: 20000,
   isEvaluatedIndividually: true,
+  hasCooldown: true,
 } as IMessageEvent
 
 export const jakSeJmenoval2Event = {
   key: 'JakSeJmenoval2',
   evaluateNextEventCondition: (message: Message) => !!message,
   nextEvent: 'JakSeJmenoval3',
+  timeoutExecution: (message: Message) => {
+    message.channel.send(`Takže Karel.`)
+  },
   execute: (message: Message<boolean>) => {
     message.channel.send(`Karel?`)
   },
@@ -224,7 +236,9 @@ export const jakSeJmenoval3Event = {
   key: 'JakSeJmenoval3',
   nextEvent: 'JakSeJmenoval4',
   evaluateNextEventCondition: (message: Message) => !!message,
-  timeoutExecution: (message: Message) => {},
+  timeoutExecution: (message: Message) => {
+    message.channel.send(`Takže Petr.`)
+  },
   execute: (message: Message<boolean>) => {
     message.channel.send(`Petr?`)
   },
@@ -252,7 +266,7 @@ export const jakSeJmenoval5Event = {
   execute: (message: Message<boolean>) => {
     message.channel.send(`Filip?`)
   },
-  timeoutMs: 10000,
+  timeoutMs: 20000,
   isEvaluatedIndividually: true,
 } as IMessageEvent
 
@@ -390,4 +404,14 @@ export const naStojaka3Event = {
     message.channel.send(`Na stojáka? 😉`)
   },
   timeoutMs: 20000,
+} as IMessageEvent
+
+export const coNovehoJakyEvent = {
+  key: 'CoNovehoJaky',
+  executeCondition: (message: Message) => message.content.toLocaleLowerCase().indexOf("co noveho jak") > -1,
+  execute: (message: Message<boolean>) => {
+    message.channel.send(`Borci daří se mi. Maty roste jako z vody. Už ho dali na hokeji do útoku konečně! S dcerou se tolik nevídám a manželka, teda bývalá, je pořád stejná.... 😉`)
+    message.channel.send(`Ale abych to shrnul:\n- přidal jsem cooldown na některé moje odpovědi- tzn. že některe moje hlašky budou meně časté\n- mám pár nových hlášek, které určitě objevíte\n- /stand-up je vice prehledny 😉`)
+  },
+  timeoutMs: 5000,
 } as IMessageEvent
