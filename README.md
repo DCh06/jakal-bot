@@ -21,7 +21,7 @@ Danny
 ✅ Programator  
 ✅ Váš laskavý chachar  
 
-Věnováno od srdce firmě tři pilíř globální
+Věnováno od srdce firmě [Redacted]
 
 ---
 
