@@ -2,7 +2,7 @@ import { IMessageEvent, MessageEventName, RandomMessageEventNames } from "../mod
 import {
     actionPointEvent,
     alriightEvent,
-    byloEvent, coNovehoJakyEvent, daSa1Event, daSa2Event,
+    byloEvent, coNovehoJakyEvent, coZbytek, daSa1Event, daSa2Event,
      distinctEvent, ehrmanEvent,  jakDlouhoVydrziEvent, 
      jakSeJmenoval10Event, jakSeJmenoval11Event, 
      jakSeJmenoval12Event, jakSeJmenoval13Event,
@@ -14,7 +14,8 @@ import {
         judoEvent, naDovoleneEvent, naStojaka1Event,
          naStojaka2Event, naStojaka3Event, nahlasuckoEvent,
           notasEvent, prajzkaEvent, redflagEvent, skvelaPraceEvent, thumbsUpEvent,
-           tichuckoEvent, toPoznasEvent, urgoEvent
+           tichuckoEvent, toPoznasEvent, urgoEvent,
+           zhobo
 } from "./mesage-respone.events";
 
 export const probabilityFairRandomResponse: RandomMessageEventNames[] = [
@@ -63,6 +64,7 @@ export const probabilityFairRandomResponse: RandomMessageEventNames[] = [
     "JakSeJmenoval1",
     "JakSeJmenoval1",
     "JakSeJmenoval1",
+    "Zhobo",
 ];
 
 export const messageResponseMap = new Map<MessageEventName | undefined, IMessageEvent>([
@@ -103,4 +105,6 @@ export const messageResponseMap = new Map<MessageEventName | undefined, IMessage
     [skvelaPraceEvent.key, skvelaPraceEvent],
     [jakDlouhoVydrziEvent.key, jakDlouhoVydrziEvent],
     [coNovehoJakyEvent.key, coNovehoJakyEvent],
+    [coZbytek.key, coZbytek],
+    [zhobo.key, zhobo],
 ]);

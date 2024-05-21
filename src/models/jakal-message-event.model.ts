@@ -15,6 +15,7 @@ export const StaticMessageEventNames = [
     "ActionPoint",
     "JakDlouho",
     "CoNovehoJaky",
+    "CoZbytek",
 ] as const
 
 export const RandomMessageEventNames = ["ThumbsUp",
@@ -45,6 +46,7 @@ export const RandomMessageEventNames = ["ThumbsUp",
     "DaSa2",
     "Notas",
     "SkvelaPrace",
+    "Zhobo",
 ] as const
 
 export const MessageEventNames = [

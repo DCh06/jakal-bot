@@ -63,6 +63,14 @@ export const skvelaPraceEvent = {
   hasCooldown: true,
 } as IMessageEvent
 
+export const zhobo = {
+  key: 'Zhobo',
+  execute: (message: Message<boolean>) => {
+    message.channel.send(`Zzz HOBÓ`);
+  },
+  timeoutMs: 10000,
+  hasCooldown: true,
+} as IMessageEvent
 
 const naDovolene = (message: Message<boolean>) => {
   const dateNow = new Date();
@@ -413,10 +421,19 @@ export const naStojaka3Event = {
 
 export const coNovehoJakyEvent = {
   key: 'CoNovehoJaky',
-  executeCondition: (message: Message) => message.content.toLocaleLowerCase().indexOf("co noveho jak") > -1,
+  executeCondition: (message: Message) => message.content.toLocaleLowerCase().indexOf("noveho") > -1,
   execute: (message: Message<boolean>) => {
     message.channel.send(`Borci daří se mi. Maty roste jako z vody. Už ho dali na hokeji do útoku konečně! S dcerou se tolik nevídám a manželka, teda bývalá, je pořád stejná.... 😉`)
     message.channel.send(`Ale abych to shrnul:\n- přidal jsem cooldown na některé moje odpovědi- tzn. že některe moje hlašky budou meně časté\n- mám pár nových hlášek, které určitě objevíte\n- /stand-up je vice prehledny 😉`)
+  },
+  timeoutMs: 5000,
+} as IMessageEvent
+
+export const coZbytek = {
+  key: 'CoZbytek',
+  executeCondition: (message: Message) => message.content.toLocaleLowerCase().indexOf("zbytek band") > -1,
+  execute: (message: Message<boolean>) => {
+    message.channel.send(`Já nemužu, Maty ma dneska judo a pak jedeme do Disneylandu.`)
   },
   timeoutMs: 5000,
 } as IMessageEvent
