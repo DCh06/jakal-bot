@@ -6,6 +6,7 @@ import * as timezone from 'dayjs/plugin/timezone'
 import { getDateSpanMilis } from "../../utils/random-generators";
 import { PripominamStandup } from "@prisma/client";
 import { pripominumStandupJobGroCronuNehe } from "../../helpers/standup/standup.helper";
+import { client } from "../../implementation/client";
 
 dayjs.extend(utc.default);
 dayjs.extend(timezone.default);
@@ -27,60 +28,63 @@ export const command = {
                 .setDescription("Popis syncu")
         ),
     async execute(interaction: CommandInteraction) {
-        await interaction.deferReply();
-        const regex = /(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})/
+        // await interaction.deferReply();
+        // const regex = /(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})/
 
-        let popis = <string>(interaction.options.get('popis')?.value)
-        let cas = <string>(interaction.options.get('cas')?.value)
-        let datum = <string>(interaction.options.get('datum')?.value);
-        let dummyDate = dayjs(new Date()).tz("Europe/Prague");
+        // let popis = <string>(interaction.options.get('popis')?.value)
+        // let cas = <string>(interaction.options.get('cas')?.value)
+        // let datum = <string>(interaction.options.get('datum')?.value);
+        // let dummyDate = dayjs(new Date()).tz("Europe/Prague");
 
-        datum ||= `${dummyDate.date()}-${dummyDate.month() + 1}-${dummyDate.year()}`;
-        let [day, month, year] = datum.split("-").map(num => num.padStart(2, '0'))
-        let createdDate = `${year}-${month}-${day}T${cas}`;
+        // datum ||= `${dummyDate.date()}-${dummyDate.month() + 1}-${dummyDate.year()}`;
+        // let [day, month, year] = datum.split("-").map(num => num.padStart(2, '0'))
+        // let createdDate = `${year}-${month}-${day}T${cas}`;
 
-        console.log(createdDate);
+        // console.log(createdDate);
 
-        if (!(regex).test(createdDate)) {
-            console.error("[Error] V pici casy");
-            interaction.editReply("Chlapi tady se něco nepovedlo, udělam na to excel sheet, nekde je chyba v datumu");
-            return;
-        }
+        // if (!(regex).test(createdDate)) {
+        //     console.error("[Error] V pici casy");
+        //     interaction.editReply("Chlapi tady se něco nepovedlo, udělam na to excel sheet, nekde je chyba v datumu");
+        //     return;
+        // }
 
-        const utcTimeOfStandup3 = dayjs.tz(createdDate, "Europe/Prague").toDate()
+        // const utcTimeOfStandup3 = dayjs.tz(createdDate, "Europe/Prague").toDate()
 
-        const discordId = interaction.user.id;
-        const description = interaction.options.get('popis') as unknown as string;
-        const channelId = interaction.channelId;
-        const standupText = `Bando- stand up tedy ${dayjs.tz(utcTimeOfStandup3, "Europe/Prague").format('DD.MM.YYYY v HH:mm')}. ${popis ? 'Nezapomeňte se připravit, téma bude: ' + popis : ''}`
+        // const discordId = interaction.user.id;
+        // const description = interaction.options.get('popis') as unknown as string;
+        // const channelId = interaction.channelId;
+        // const standupText = `Bando- stand up tedy ${dayjs.tz(utcTimeOfStandup3, "Europe/Prague").format('DD.MM.YYYY v HH:mm')}. ${popis ? 'Nezapomeňte se připravit, téma bude: ' + popis : ''}`
 
-        // if less than 30 dont save to db
-        console.log(new Date(), utcTimeOfStandup3)
-        if (getDateSpanMilis(new Date(), utcTimeOfStandup3) < 30 * 60 * 1000) {
+        // // if less than 30 dont save to db
+        // console.log(new Date(), utcTimeOfStandup3)
+        // if (getDateSpanMilis(new Date(), utcTimeOfStandup3) < 30 * 60 * 1000) {
 
-            let hackyPickData: Pick<PripominamStandup, 'time' | 'channelId'> = { time: utcTimeOfStandup3, channelId };
-            pripominumStandupJobGroCronuNehe([hackyPickData]);
-            console.log(dayjs(utcTimeOfStandup3).locale("Europe/Prague").format('DD/MM/YYYY v HH:m'))
-            interaction.editReply({ content: standupText });
-            return;
-        }
+        //     let hackyPickData: Pick<PripominamStandup, 'time' | 'channelId'> = { time: utcTimeOfStandup3, channelId };
+        //     pripominumStandupJobGroCronuNehe([hackyPickData]);
+        //     console.log(dayjs(utcTimeOfStandup3).locale("Europe/Prague").format('DD/MM/YYYY v HH:m'))
+        //     interaction.editReply({ content: standupText });
+        //     return;
+        // }
 
-        try {
-            let pripominamStandup = await prisma.pripominamStandup.create({
-                data: {
-                    discordId,
-                    time: utcTimeOfStandup3,
-                    description,
-                    channelId,
-                }
-            });
-            interaction
-                .editReply(
-                    {
-                        content: standupText
-                    })
-        } catch (e) {
-            interaction.editReply("Chlapi tady se něco nepovedlo, udělam na to excel sheet, asi tam chybi setTimeout()");
-        }
+        // try {
+        //     let pripominamStandup = await prisma.pripominamStandup.create({
+        //         data: {
+        //             discordId,
+        //             time: utcTimeOfStandup3,
+        //             description,
+        //             channelId,
+        //         }
+        //     });
+        //     interaction
+        //         .editReply(
+        //             {
+        //                 content: standupText
+        //             })
+        // } catch (e) {
+        //     interaction.editReply("Chlapi tady se něco nepovedlo, udělam na to excel sheet, asi tam chybi setTimeout()");
+        // }
+        const jakalEmoji = client.emojis.cache.find(emoji => emoji.name === 'jakal2')
+        // await interaction.reply({content:`Máš ${user?.jakalikBalance} jakaliků ${jakalEmoji}`});
+        await interaction.reply({content:`Planetscale jsou mrtki na peňáze ${jakalEmoji}`});
     },
 };

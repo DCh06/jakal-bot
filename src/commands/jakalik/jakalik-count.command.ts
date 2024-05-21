@@ -7,26 +7,25 @@ export const command = {
         .setName("jakaliky")
         .setDescription("Dozvíš se kolik máš jakalíků! \n Jakalíky slouží k trackovaní tvého agilního scóre."),
     async execute(interaction: CommandInteraction) {
-        interaction.user.id
-        console.log(interaction.user.id)
-        let user = await prisma.user.findFirst({
-            where: {
-                discordId: {
-                    equals: interaction.user.id
-                }
-            }
-        });
-        console.log(user);
+        // let user = await prisma.user.findFirst({
+        //     where: {
+        //         discordId: {
+        //             equals: interaction.user.id
+        //         }
+        //     }
+        // });
+        // console.log(user);
 
-        if (!user) {
-            console.log("creating user");
-            user = await createUserIfNotExist(interaction)
-        }
+        // if (!user) {
+        //     console.log("creating user");
+        //     user = await createUserIfNotExist(interaction)
+        // }
 
-        console.log(user?.jakalikBalance);
+        // console.log(user?.jakalikBalance);
 
         const jakalEmoji = client.emojis.cache.find(emoji => emoji.name === 'jakal2')
-        await interaction.reply({content:`Máš ${user?.jakalikBalance} jakaliků ${jakalEmoji}`});
+        // await interaction.reply({content:`Máš ${user?.jakalikBalance} jakaliků ${jakalEmoji}`});
+        await interaction.reply({content:`Planetscale jsou mrtki na peňáze ${jakalEmoji}`});
     },
 };
 
