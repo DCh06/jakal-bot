@@ -1,6 +1,6 @@
 import { Message } from "discord.js";
 import { generateRandomDateInBoundaries } from "../utils/random-generators";
-import { IMessageEvent, MessageEventName } from "../models/jakal-message-event.model";
+import { IMessageEvent } from "../models/jakal-message-event.model";
 
 export const thumbsUpEvent = {
   key: 'ThumbsUp',
@@ -110,6 +110,7 @@ const tichuckoCondition = (message: Message<boolean>) => {
   return ((containsDrz && containsPicuHubu) || kokote);
 
 }
+
 export const tichuckoEvent = {
   key: 'Tichucko',
   executeCondition: tichuckoCondition,

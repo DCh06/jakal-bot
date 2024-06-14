@@ -3,7 +3,7 @@ import { client } from "../implementation/client";
 import { addJakaliky } from "../queries/add-jakaliky.query";
 import { jakalikyRef, agilniSlova } from "../utils/references";
 import { IEventNameCooldown, IMessageEvent, IMessageEventWithCondition, IMessageEventWithNext, MessageEventName, RandomMessageEventNames, SpecialMessageEventNames, StaticMessageEventNames, isMessageEventChainNextWithCondition, isMessageEventWithTimeoutExecution } from "../models/jakal-message-event.model";
-import { messageResponseMap, probabilityFairRandomResponse } from "../message/message-response";
+import { registerMessageResponseMap, probabilityFairRandomResponse } from "../message/message-response";
 
 export class JakalMessageHandler {
     private msgEvent?: IMessageEvent
@@ -36,40 +36,13 @@ export class JakalMessageHandler {
         this.handleSideEffects(message, this.msgEvent?.key);
 
         this.handleAddEventOnCooldown(this.msgEvent);
-
-        // // let respondedReturn = this.handleResponseChanceChange(message, this.responseChance);
-        // // if (respondedReturn) { return; }
-        // // const rnd = Math.random();
-
-        // // this.agilniSlovaCheck(message);
-
-        // // respondedReturn = this.staticResponsesCheck(message);
-        // // if (respondedReturn) { return; }
-
-        // // this.jakalRespondRandom(rnd, message);
-        // this.msgEvent = radkuEvent;
-        // intanceof msgevent IMessageEventWithNextConditionally
-        // promise ( (resolve)=> {
-        //     setTimeout(()=> {
-
-        //     })
-        // }) 
-
-
-        //todo get event, await event, handle sideefects, cleare event
-        // create 2 separate arrays, static responses, random respones => every static response get from Map
-        // check condition => assign current event => after promise resolve, free current event
-
-        // if not any static, froms econd array of keys generate 1 key, get from map set response free up event after set timeout
-        // if event. next we need recursion / infinite loop until all promise resolves? after that free up event
-        // recursion inside handle event, execute, if next handle event, each recursion loop handle sideeffects
     }
 
     getSpecialMessageEventWithCondition(message: Message<boolean>): IMessageEvent | undefined {
         let eventName = SpecialMessageEventNames.find((staticEventName) => {
-            return (<IMessageEventWithCondition>messageResponseMap.get(staticEventName))?.executeCondition(message);
+            return (<IMessageEventWithCondition>registerMessageResponseMap.get(staticEventName))?.executeCondition(message);
         });
-        return messageResponseMap.get(eventName);
+        return registerMessageResponseMap.get(eventName);
     }
 
     getNewEvent(mesage: Message, eventsOnCooldownNames: MessageEventName[]): IMessageEvent | undefined {
@@ -85,12 +58,10 @@ export class JakalMessageHandler {
         let eventName = StaticMessageEventNames
             .filter(staticEventName => !eventsOnCooldownNames.includes(staticEventName))
             .find(staticEventName => {
-                return (<IMessageEventWithCondition>messageResponseMap.get(staticEventName))?.executeCondition(message);
+                return (<IMessageEventWithCondition>registerMessageResponseMap.get(staticEventName))?.executeCondition(message);
             });
 
-        // TODO add dynamically
-        // do not forget to add new event here
-        return messageResponseMap.get(eventName);
+        return registerMessageResponseMap.get(eventName);
     }
 
     getRandomMessageEvent(message: Message<boolean>, eventsOnCooldownNames: MessageEventName[]): IMessageEvent | undefined {
@@ -101,7 +72,7 @@ export class JakalMessageHandler {
                 .filter(eventName => !eventsOnCooldownNames.includes(eventName))[Math.floor(probabilityFairRandomResponse.length * randomRes)];
         }
 
-        return messageResponseMap.get(eventName);
+        return registerMessageResponseMap.get(eventName);
     }
 
     async handleEvent(message: Message, msgEvent?: IMessageEvent) {
@@ -120,7 +91,7 @@ export class JakalMessageHandler {
         msgEvent?.execute(message);
 
         // if we have next event, change state
-        this.msgEvent = messageResponseMap.get((<IMessageEventWithNext>msgEvent)?.nextEvent);
+        this.msgEvent = registerMessageResponseMap.get((<IMessageEventWithNext>msgEvent)?.nextEvent);
 
         // if each event condition handled individualy, reset condition
         if (!this.msgEvent || (this.msgEvent && isMessageEventChainNextWithCondition(this.msgEvent) && this.msgEvent.isEvaluatedIndividually)) {
@@ -141,20 +112,6 @@ export class JakalMessageHandler {
         if ((<readonly string[]>RandomMessageEventNames).includes(eventName)) {
             addJakaliky(message.author, jakalikyRef["static agile"], "Random check!");
         }
-    }
-
-    // todo refactor, add handling sideeffects by event name
-    private handleResponseChanceChange(message: Message, responseChance: number): boolean {
-        if (message.mentions.members?.has(message.client.user?.id) || message.content.toLocaleLowerCase().indexOf('jakal') > -1) {
-            this.increaseChance();
-        }
-
-        if (this.shouldDecreaseChance(message, responseChance)) {
-            message.channel.send("Ale ja to dělal schválně, aby jste pochopili, že to je špatně!")
-            this.decreaseChance();
-            return true;
-        }
-        return false;
     }
 
     private increaseChance() {

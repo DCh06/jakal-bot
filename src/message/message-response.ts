@@ -1,23 +1,16 @@
 import { IMessageEvent, MessageEventName, RandomMessageEventNames } from "../models/jakal-message-event.model";
-import {
-    actionPointEvent,
-    alriightEvent,
-    byloEvent, coNovehoJakyEvent, coZbytek, daSa1Event, daSa2Event,
-     distinctEvent, ehrmanEvent,  jakDlouhoVydrziEvent, 
-     jakSeJmenoval10Event, jakSeJmenoval11Event, 
-     jakSeJmenoval12Event, jakSeJmenoval13Event,
-      jakSeJmenoval14Event, jakSeJmenoval1Event, 
-      jakSeJmenoval2Event, jakSeJmenoval3Event,
-       jakSeJmenoval4Event, jakSeJmenoval5Event, 
-       jakSeJmenoval6Event, jakSeJmenoval7Event,
-        jakSeJmenoval8Event, jakSeJmenoval9Event, 
-        judoEvent, naDovoleneEvent, naStojaka1Event,
-         naStojaka2Event, naStojaka3Event, nahlasuckoEvent,
-          notasEvent, prajzkaEvent, redflagEvent, skvelaPraceEvent, thumbsUpEvent,
-           tichuckoEvent, toPoznasEvent, urgoEvent,
-           zhobo
-} from "./mesage-respone.events";
+import * as jakalResponses from "./mesage-respone.events";
 
+
+// register all exported members from 
+const registeredMessageResponseEvents: Array<[MessageEventName | undefined, IMessageEvent]> = []
+const keys = Object.keys(jakalResponses);
+for (const key of keys) {
+    const jakalResponse = (<any>jakalResponses)[key];
+    registeredMessageResponseEvents.push([jakalResponse.key, jakalResponse])
+}
+
+export const registerMessageResponseMap = new Map<MessageEventName | undefined, IMessageEvent>(registeredMessageResponseEvents);
 export const probabilityFairRandomResponse: RandomMessageEventNames[] = [
     "ThumbsUp",
     "ThumbsUp",
@@ -66,45 +59,3 @@ export const probabilityFairRandomResponse: RandomMessageEventNames[] = [
     "JakSeJmenoval1",
     "Zhobo",
 ];
-
-export const messageResponseMap = new Map<MessageEventName | undefined, IMessageEvent>([
-    [tichuckoEvent.key, tichuckoEvent],
-    [nahlasuckoEvent.key, nahlasuckoEvent],
-    [thumbsUpEvent.key, thumbsUpEvent],
-    [toPoznasEvent.key, toPoznasEvent],
-    [distinctEvent.key, distinctEvent],
-    [alriightEvent.key, alriightEvent],
-    [redflagEvent.key, redflagEvent],
-    [naDovoleneEvent.key, naDovoleneEvent],
-    [judoEvent.key, judoEvent],
-    [urgoEvent.key, urgoEvent],
-    [ehrmanEvent.key, ehrmanEvent],
-    [prajzkaEvent.key, prajzkaEvent],
-    [byloEvent.key, byloEvent],
-    [naStojaka1Event.key, naStojaka1Event],
-    [naStojaka2Event.key, naStojaka2Event],
-    [naStojaka3Event.key, naStojaka3Event],
-    [jakSeJmenoval1Event.key, jakSeJmenoval1Event],
-    [jakSeJmenoval2Event.key, jakSeJmenoval2Event],
-    [jakSeJmenoval3Event.key, jakSeJmenoval3Event],
-    [jakSeJmenoval4Event.key, jakSeJmenoval4Event],
-    [jakSeJmenoval5Event.key, jakSeJmenoval5Event],
-    [jakSeJmenoval6Event.key, jakSeJmenoval6Event],
-    [jakSeJmenoval7Event.key, jakSeJmenoval7Event],
-    [jakSeJmenoval8Event.key, jakSeJmenoval8Event],
-    [jakSeJmenoval9Event.key, jakSeJmenoval9Event],
-    [jakSeJmenoval10Event.key, jakSeJmenoval10Event],
-    [jakSeJmenoval11Event.key, jakSeJmenoval11Event],
-    [jakSeJmenoval12Event.key, jakSeJmenoval12Event],
-    [jakSeJmenoval13Event.key, jakSeJmenoval13Event],
-    [jakSeJmenoval14Event.key, jakSeJmenoval14Event],
-    [daSa1Event.key, daSa1Event],
-    [daSa2Event.key, daSa2Event],
-    [actionPointEvent.key, actionPointEvent],
-    [notasEvent.key, notasEvent],
-    [skvelaPraceEvent.key, skvelaPraceEvent],
-    [jakDlouhoVydrziEvent.key, jakDlouhoVydrziEvent],
-    [coNovehoJakyEvent.key, coNovehoJakyEvent],
-    [coZbytek.key, coZbytek],
-    [zhobo.key, zhobo],
-]);
