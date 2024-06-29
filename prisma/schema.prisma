@@ -1,14 +1,14 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-datasource db {
-  provider     = "mysql"
-  url          = env("DATABASE_URL")
-  relationMode = "prisma"
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["multiSchema"]
 }
 
-generator client {
-  provider = "prisma-client-js"
+datasource db {
+  provider     = "postgresql"
+  url          = env("DATABASE_URL")
+  directUrl    = env("DIRECT_URL")
+  relationMode = "prisma"
+  schemas      = ["jakalbot"]
 }
 
 model User {
@@ -18,6 +18,8 @@ model User {
   jakalikBalance    Int
   jakalikHistory    JakalikHistory[]
   pripominamStandup PripominamStandup[]
+
+  @@schema("jakalbot")
 }
 
 model JakalikHistory {
@@ -29,6 +31,7 @@ model JakalikHistory {
   balanceMovement Int
 
   @@index([discordId])
+  @@schema("jakalbot")
 }
 
 model PripominamStandup {
@@ -41,4 +44,5 @@ model PripominamStandup {
   finished    Boolean @default(false)
 
   @@index([discordId])
+  @@schema("jakalbot")
 }
