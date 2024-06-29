@@ -3,7 +3,7 @@ import { Collection, Events, REST, Routes } from "discord.js";
 import { client } from "./client";
 
 import { handleMessage, handlePresenceUpdate, handleInteraction, loadCommands } from "./interact.main";
-// import { standupJob } from "../recurring-jobs/pripominam-standup.job";
+import { standupJob } from "../recurring-jobs/pripominam-standup.job";
 import { JakalMessageHandler } from "../handlers/jakal-message.handler";
 
 
@@ -21,7 +21,7 @@ export const run = () => {
     );
 
     // idk asi treeshaking?? musi byt LOAD JOBS
-    // standupJob;
+    standupJob;
 
     handleMessage(jakalMessageHandler);
     handlePresenceUpdate();

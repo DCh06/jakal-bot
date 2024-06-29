@@ -21,7 +21,7 @@ export class JakalMessageHandler {
         // special events dont care about current event
         const specialMsgEvent = this.getSpecialMessageEventWithCondition(message);
         this.handleEvent(message, specialMsgEvent);
-        console.log(this.responseChance);
+        console.log(this.responseChance, specialMsgEvent);
 
         // when event in progress do not go forward, until all promises resolve
         if (!this.msgEventNextConditionSucceed && this.msgEvent && isMessageEventChainNextWithCondition(this.msgEvent)) {
@@ -115,6 +115,8 @@ export class JakalMessageHandler {
     }
 
     private increaseChance() {
+        console.log("increase change");
+        
         this.responseChance = this.responseChance * 1.09;
     }
 
